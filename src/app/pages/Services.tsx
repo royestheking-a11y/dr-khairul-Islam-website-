@@ -1,26 +1,32 @@
-import { Stethoscope, Heart, Users, Syringe, Baby, Zap, ClipboardList, HeartHandshake, BookOpen, Thermometer, Droplets, HeartPulse, Wind, Pill, UserCheck, AlertCircle, Bone, Brain, Activity, Sparkles } from 'lucide-react';
+import { Stethoscope, Heart, Users, Syringe, Baby, Zap, HeartHandshake, BookOpen, Thermometer, Droplets, HeartPulse, Wind, Pill, UserCheck, Bone, Brain, Activity, Sparkles, Flame, Utensils, Maximize2, ShieldAlert, Sun, ArrowUpRight, Footprints, Layers } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { SEO } from '@/app/components/SEO';
 
 export default function Services() {
   const medicineServices = [
-    { name: 'জ্বর ও ইনফেকশন চিকিৎসা', icon: Thermometer },
-    { name: 'ডায়াবেটিস ব্যবস্থাপনা', icon: Droplets },
-    { name: 'উচ্চ রক্তচাপ নিয়ন্ত্রণ', icon: HeartPulse },
-    { name: 'গ্যাস্ট্রিক ও পেটের সমস্যা', icon: Pill },
-    { name: 'শ্বাসকষ্ট ও হাঁপানি', icon: Wind },
-    { name: 'সাধারণ মেডিসিন সমস্যা', icon: Stethoscope },
+    { name: 'জ্বর', icon: Thermometer },
+    { name: 'মাথাব্যথা', icon: Brain },
+    { name: 'শ্বাসকষ্ট', icon: Wind },
+    { name: 'বুক জ্বালাপোড়া', icon: Flame },
+    { name: 'পেটে ব্যাথা', icon: Pill },
+    { name: 'পেট ফাঁপা দেওয়া', icon: Wind },
+    { name: 'হজম শক্তি কমে যাওয়া', icon: Utensils },
+    { name: 'প্রসাবে জ্বালাপোড়া', icon: Droplets },
+    { name: 'শরীর ফুলে যাওয়া', icon: Maximize2 },
+    { name: 'এলার্জির সমস্যা', icon: ShieldAlert },
+    { name: 'দাঁদ চর্মরোগ', icon: Sun },
+    { name: 'থাইরয়েড হরমোনের সমস্যা', icon: Activity },
+    { name: 'বুকে ব্যথা', icon: HeartPulse },
+    { name: 'সাদাশ্রাব', icon: Droplets },
+    { name: 'পেট বেড়ে যাওয়া', icon: ArrowUpRight },
   ];
 
   const painServices = [
-    { name: 'কোমর ব্যথা (Lower Back Pain)', icon: UserCheck },
-    { name: 'ঘাড় ও কাঁধ ব্যথা (Neck & Shoulder Pain)', icon: AlertCircle },
-    { name: 'জয়েন্ট ব্যথা (Joint Pain)', icon: Bone },
-    { name: 'সায়াটিকা (Sciatica)', icon: Activity },
-    { name: 'নার্ভ পেইন (Neuropathic Pain)', icon: Zap },
-    { name: 'মাথাব্যথা / মাইগ্রেন (Migraine)', icon: Brain },
-    { name: 'পোস্ট-সার্জিক্যাল পেইন', icon: Syringe },
-    { name: 'ক্যান্সার পেইন ম্যানেজমেন্ট', icon: Heart },
+    { name: 'হাঁটুর জয়েন্টের পানি উত্তোলন', icon: Syringe },
+    { name: 'কোমর ব্যথা', icon: UserCheck },
+    { name: 'পায়ের গোড়ালি ব্যথা', icon: Footprints },
+    { name: 'হাঁটু ব্যথা', icon: Bone },
+    { name: 'সকল ধরণের তীব্র ও দীর্ঘমেয়াদী ব্যথা', icon: Zap },
   ];
 
   return (
@@ -33,7 +39,7 @@ export default function Services() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">আমাদের সেবাসমূহ</h1>
+          <h1 className="text-4xl font-bold mb-4">সেবাসমূহ</h1>
           <p className="text-lg text-muted-foreground">
             আধুনিক ও কার্যকর চিকিৎসা সেবায় আমরা প্রতিশ্রুতিবদ্ধ
           </p>
@@ -92,26 +98,26 @@ export default function Services() {
                   <Baby className="h-8 w-8 text-purple-600" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">আল্ট্রাসনোগ্রাফি</h3>
-                <p className="text-muted-foreground mb-3">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি সেবা</p>
-                <p className="text-2xl font-bold text-primary">৪০০ টাকা</p>
+                <p className="text-muted-foreground">আল্ট্রাসনোগ্রাফি সেবা</p>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-br from-blue-50 to-cyan-50">
               <CardContent className="p-8">
                 <div className="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                  <Syringe className="h-8 w-8 text-blue-600" />
+                  <Layers className="h-8 w-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">ইন্টারভেনশনাল পেইন</h3>
-                <p className="text-muted-foreground">আধুনিক পদ্ধতিতে দীর্ঘমেয়াদী ব্যথার চিকিৎসা</p>
+                <h3 className="text-xl font-bold mb-2">সকল ধরণের আল্ট্রাসনোগ্রাফী</h3>
+                <p className="text-muted-foreground">আধুনিক প্রযুক্তিতে নির্ভুল রিপোর্ট</p>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-br from-green-50 to-emerald-50">
               <CardContent className="p-8">
                 <div className="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                  <ClipboardList className="h-8 w-8 text-green-600" />
+                  <Baby className="h-8 w-8 text-green-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">পরামর্শ ও পরীক্ষা</h3>
-                <p className="text-muted-foreground">সম্পূর্ণ স্বাস্থ্য পরীক্ষা ও পরামর্শ সেবা</p>
+                <h3 className="text-xl font-bold mb-2">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফী</h3>
+                <p className="text-muted-foreground mb-3">শুধুমাত্র গর্ভবতী মায়েদের জন্য বিশেষ সেবা</p>
+                <p className="text-2xl font-bold text-primary">৫০০ টাকা</p>
               </CardContent>
             </Card>
           </div>

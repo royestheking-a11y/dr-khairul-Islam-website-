@@ -1,4 +1,4 @@
-import { Heart, Stethoscope, RefreshCw, Baby, HeartHandshake, BookOpen, Banknote, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Heart, Stethoscope, RefreshCw, Baby, HeartHandshake, BookOpen, Banknote, CheckCircle2, AlertCircle, Microscope } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
 
 export default function Fees() {
@@ -21,7 +21,7 @@ export default function Fees() {
     },
     {
       service: 'গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি',
-      fee: '৪০০ টাকা',
+      fee: '৫০০ টাকা',
       icon: Baby,
       iconColor: 'text-purple-600',
       bgColor: 'bg-purple-100',
@@ -43,6 +43,15 @@ export default function Fees() {
       iconColor: 'text-blue-600',
       bgColor: 'bg-blue-100',
       color: 'from-blue-100 to-cyan-100',
+      special: true,
+    },
+    {
+      service: 'সকল মেডিকেল টেস্ট',
+      fee: 'স্বল্প খরচে',
+      icon: Microscope,
+      iconColor: 'text-amber-600',
+      bgColor: 'bg-amber-100',
+      color: 'from-amber-100 to-orange-100',
       special: true,
     },
   ];
@@ -105,7 +114,7 @@ export default function Fees() {
                   </tr>
                   <tr className="border-b hover:bg-gray-50">
                     <td className="p-4">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি</td>
-                    <td className="p-4 text-right font-bold">৪০০ টাকা</td>
+                    <td className="p-4 text-right font-bold">৫০০ টাকা</td>
                   </tr>
                   <tr className="border-b hover:bg-gray-50 bg-green-50">
                     <td className="p-4 font-medium">প্রতিবন্ধী রোগী</td>

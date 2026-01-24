@@ -34,7 +34,7 @@ export default function Home() {
     { question: 'Follow-up কখন করতে হবে?', answer: 'প্রথম পরামর্শের পর চিকিৎসক যে সময় নির্ধারণ করে দিবেন সেই সময় Follow-up করতে হবে। সাধারণত ৭-১৫ দিনের মধ্যে Follow-up করা হয়।' },
     { question: 'Follow-up ফি কত?', answer: 'Follow-up ফি ৩০০ টাকা। তবে এটি প্রথম পরামর্শের ১৫ দিনের মধ্যে প্রযোজ্য। আগের রসিদ সাথে আনতে হবে।' },
     { question: 'পেইন মেডিসিন কি?', answer: 'পেইন মেডিসিন হলো একটি বিশেষায়িত চিকিৎসা শাখা যেখানে বিভিন্ন ধরনের ব্যথার কারণ নির্ণয় করে আধুনিক পদ্ধতিতে চিকিৎসা প্রদান করা হয়।' },
-    { question: 'আল্ট্রাসনোগ্রাফির খরচ কত?', answer: 'গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি মাত্র ৪০০ টাকায় করা হয়। এটি একটি বিশেষ মূল্যে প্রদান করা সেবা।' },
+    { question: 'আল্ট্রাসনোগ্রাফির খরচ কত?', answer: 'গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি মাত্র ৫০০ টাকায় করা হয়। এটি একটি বিশেষ মূল্যে প্রদান করা সেবা।' },
     { question: 'প্রতিবন্ধীদের ফ্রী চিকিৎসা কিভাবে পাবো?', answer: 'প্রতিবন্ধী পরিচয়পত্র অথবা প্রাসঙ্গিক কাগজপত্র সাথে নিয়ে চেম্বারে আসুন। আপনাকে সম্পূর্ণ বিনামূল্যে পরামর্শ ও চিকিৎসা সেবা প্রদান করা হবে।' },
   ];
 
@@ -206,7 +206,7 @@ export default function Home() {
               <CardContent className="p-6">
                 <Users className="h-10 w-10 text-primary mb-4" />
                 <h3 className="font-bold mb-2">আল্ট্রাসনোগ্রাফি</h3>
-                <p className="text-sm text-muted-foreground">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি (৪০০ টাকা)</p>
+                <p className="text-sm text-muted-foreground">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি (৫০০ টাকা)</p>
               </CardContent>
             </Card>
           </div>
@@ -322,7 +322,7 @@ export default function Home() {
                   <Baby className="h-8 w-8 text-purple-600" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">আল্ট্রাসনোগ্রাফি</h3>
-                <p className="text-2xl font-bold text-purple-600 mb-2">মাত্র ৪০০ টাকা</p>
+                <p className="text-2xl font-bold text-purple-600 mb-2">মাত্র ৫০০ টাকা</p>
                 <p className="text-sm text-muted-foreground">গর্ভবতী মায়েদের বিশেষ মূল্যে</p>
               </CardContent>
             </Card>
