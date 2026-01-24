@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Phone, Mail, MapPin, AlertTriangle } from 'lucide-react';
+import { Phone, Mail, MapPin, AlertTriangle, ArrowUp } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -84,9 +84,10 @@ export function Footer() {
           <p>© 2026 Dr. Md. Khairul Islam. সর্বস্বত্ব সংরক্ষিত।</p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="hover:text-white transition"
+            className="group flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-5 py-2.5 rounded-full font-bold shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1"
           >
-            ⬆ শীর্ষে ফিরে যান
+            শীর্ষে ফিরে যান
+            <ArrowUp className="h-4 w-4 group-hover:animate-bounce" />
           </button>
         </div>
       </div>
