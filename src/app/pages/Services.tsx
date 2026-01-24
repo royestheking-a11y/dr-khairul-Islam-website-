@@ -1,4 +1,4 @@
-import { Stethoscope, Heart, Users, Syringe, Baby, Zap, HeartHandshake, BookOpen, Thermometer, Droplets, HeartPulse, Wind, Pill, UserCheck, Bone, Brain, Activity, Sparkles, Flame, Utensils, Maximize2, ShieldAlert, Sun, ArrowUpRight, Footprints, Layers } from 'lucide-react';
+import { Stethoscope, Heart, Users, Syringe, Baby, Zap, HeartHandshake, BookOpen, Thermometer, Droplets, HeartPulse, Wind, Pill, UserCheck, Bone, Brain, Activity, Sparkles, Flame, Utensils, Maximize2, ShieldAlert, Sun, ArrowUpRight, Footprints, Layers, User, AlertTriangle } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { SEO } from '@/app/components/SEO';
 
@@ -14,7 +14,7 @@ export default function Services() {
     { name: 'প্রসাবে জ্বালাপোড়া', icon: Droplets },
     { name: 'শরীর ফুলে যাওয়া', icon: Maximize2 },
     { name: 'এলার্জির সমস্যা', icon: ShieldAlert },
-    { name: 'দাঁদ চর্মরোগ', icon: Sun },
+    { name: 'চর্মরোগ', icon: Sun },
     { name: 'থাইরয়েড হরমোনের সমস্যা', icon: Activity },
     { name: 'বুকে ব্যথা', icon: HeartPulse },
     { name: 'সাদাশ্রাব', icon: Droplets },
@@ -23,6 +23,8 @@ export default function Services() {
 
   const painServices = [
     { name: 'হাঁটুর জয়েন্টের পানি উত্তোলন', icon: Syringe },
+    { name: 'ঘাড় ও কাঁধ ব্যথা', icon: User },
+    { name: 'হঠাৎ তীব্র ব্যথা', icon: AlertTriangle },
     { name: 'কোমর ব্যথা', icon: UserCheck },
     { name: 'পায়ের গোড়ালি ব্যথা', icon: Footprints },
     { name: 'হাঁটু ব্যথা', icon: Bone },
