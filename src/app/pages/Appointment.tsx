@@ -5,6 +5,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
+import { SEO } from '@/app/components/SEO';
 
 export default function Appointment() {
   const [formData, setFormData] = useState({
@@ -44,6 +45,11 @@ export default function Appointment() {
 
   return (
     <div className="py-12">
+      <SEO
+        title="Appointment"
+        description="Book an appointment with Dr. Khairul Islam in Barguna. Consultation 500৳, follow-up 300৳. Call or WhatsApp (+8801725497355) to take serial."
+        canonical="https://drkhairulislam.vercel.app/appointment"
+      />
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">

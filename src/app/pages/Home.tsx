@@ -113,7 +113,7 @@ export default function Home() {
                   />
 
                   {/* Doctor info overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-teal-100">
+                  <div className="relative mt-4 md:absolute md:bottom-6 md:left-6 md:right-6 md:mt-0 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-teal-100">
                     <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
                       ডা. মোঃ খাইরুল ইসলাম
                     </h3>

@@ -1,5 +1,6 @@
 import { Stethoscope, Heart, Users, Syringe, Baby, Zap, ClipboardList, HeartHandshake, BookOpen, Thermometer, Droplets, HeartPulse, Wind, Pill, UserCheck, AlertCircle, Bone, Brain, Activity, Sparkles } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
+import { SEO } from '@/app/components/SEO';
 
 export default function Services() {
   const medicineServices = [
@@ -24,6 +25,11 @@ export default function Services() {
 
   return (
     <div className="py-12">
+      <SEO
+        title="Services"
+        description="Medicine and Interventional Pain Management services by Dr. Khairul Islam in Barguna. Treatment for fever, diabetes, BP, asthma, gastric issues, back pain, joint pain, sciatica, nerve pain and more."
+        canonical="https://drkhairulislam.vercel.app/services"
+      />
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
