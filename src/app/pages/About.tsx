@@ -16,7 +16,7 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-6 items-start mb-16">
           <div>
             <img
-              src="/doctor img.jpg"
+              src="/doctor img.png"
               alt="ডা. মোঃ খাইরুল ইসলাম"
               className="rounded-2xl shadow-xl w-full"
             />

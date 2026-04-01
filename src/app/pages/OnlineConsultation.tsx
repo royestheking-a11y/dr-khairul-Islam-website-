@@ -361,6 +361,36 @@ export default function OnlineConsultation() {
                 </RadioGroup>
               </div>
 
+              <Card className="bg-teal-50 border-teal-200">
+                <CardContent className="p-4">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-bold text-teal-900">
+                      পেমেন্ট করার নিয়ম:
+                    </p>
+                    <p className="text-sm text-teal-800">
+                      ১. নিচের দেওয়া নাম্বারে <span className="font-bold text-primary">৫০০ টাকা</span> 'Send Money' করুন।
+                    </p>
+                    <div className="bg-white p-3 rounded-lg border border-teal-100 flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase font-semibold">বিকাশ / নগদ / রকেট (Personal)</p>
+                        <p className="text-lg font-bold text-primary">01725497355</p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => navigator.clipboard.writeText('01725497355')}
+                        className="text-primary hover:text-primary hover:bg-primary/5"
+                      >
+                        কপি করুন
+                      </Button>
+                    </div>
+                    <p className="text-sm text-teal-800">
+                      ২. পেমেন্ট সফল হওয়ার পর প্রাপ্ত <span className="font-bold">Transaction ID</span> টি নিচের ঘরে লিখে 'নিশ্চিত করুন' বাটনে ক্লিক করুন।
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
               <div>
                 <Label htmlFor="transactionId">ট্রান্স্যাকশন আইডি *</Label>
                 <Input
@@ -373,14 +403,6 @@ export default function OnlineConsultation() {
                   className="bg-input-background"
                 />
               </div>
-
-              <Card className="bg-teal-50 border-teal-200">
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground">
-                    <strong>পরবর্তী ধাপ:</strong> WhatsApp এ আপনার বুকিং তথ্য পাঠানোর পর আমরা পেমেন্ট নাম্বার এবং নির্দেশনা প্রদান করব।
-                  </p>
-                </CardContent>
-              </Card>
 
               <div className="flex gap-3">
                 <Button onClick={handleBack} variant="outline" className="flex-1">

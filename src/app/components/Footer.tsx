@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Phone, Mail, MapPin, AlertTriangle, ArrowUp } from 'lucide-react';
+import { Phone, Mail, MapPin, AlertTriangle, ArrowUp, Facebook, MessageCircle } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -13,6 +13,26 @@ export function Footer() {
             <p className="text-sm text-slate-400">
               বিশ্বাসযোগ্য চিকিৎসা • আধুনিক পেইন ম্যানেজমেন্ট • রোগীবান্ধব সেবা
             </p>
+            <div className="flex gap-4 mt-6">
+              <a
+                href="https://www.facebook.com/drmdkhairulislams/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-primary transition-all duration-300 shadow-lg"
+                title="Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://m.me/drmdkhairulislams"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-blue-600 transition-all duration-300 shadow-lg"
+                title="Messenger"
+              >
+                <MessageCircle className="h-5 w-5" />
+              </a>
+            </div>
           </div>
 
           {/* Contact Info */}

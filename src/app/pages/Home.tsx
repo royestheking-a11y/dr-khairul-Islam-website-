@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
-const doctorImage = "/doctor img.jpg";
+const doctorImage = "/doctor img.png";
 
 export default function Home() {
   const [formData, setFormData] = useState({
