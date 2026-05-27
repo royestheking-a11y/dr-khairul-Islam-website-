@@ -1,10 +1,18 @@
 import { GraduationCap, Award, Building2, Heart, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
+import { Helmet } from 'react-helmet-async';
 
 
 export default function About() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>About Dr. Khairul Islam | Best Medicine Specialist in Bangladesh</title>
+        <meta name="description" content="Learn more about Dr. Khairul Islam, a top Medicine and Interventional Pain Management Specialist in Barguna, Bangladesh. Experienced, patient-friendly, and trusted." />
+        <meta name="keywords" content="About Dr. Khairul Islam, Top Medicine Specialist Bangladesh, Best Pain Doctor Barguna, FIPM India, Medicine Doctor Bangladesh" />
+        <meta property="og:title" content="About Dr. Khairul Islam | Best Medicine Specialist in Bangladesh" />
+        <meta property="og:description" content="Learn more about Dr. Khairul Islam, a top Medicine and Interventional Pain Management Specialist in Barguna, Bangladesh." />
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

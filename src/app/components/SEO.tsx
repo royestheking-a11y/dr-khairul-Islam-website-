@@ -8,8 +8,8 @@ interface SEOProps {
 }
 
 export function SEO({ title, description, keywords, canonical }: SEOProps) {
-    const siteTitle = "Dr. Khairul Islam | Medicine & Pain Specialist in Barguna";
-    const defaultDescription = "Dr. Khairul Islam is a trusted Medicine & Interventional Pain Management Specialist in Barguna, Bangladesh. Consultation fee 500৳, follow-up 300৳. Call or WhatsApp for appointment.";
+    const siteTitle = "Dr. Khairul Islam | Best Medicine & Pain Specialist in Barguna, Bangladesh";
+    const defaultDescription = "Dr. Khairul Islam is a top Medicine & Interventional Pain Management Specialist in Barguna, Bangladesh. Treatment for pain, diabetes, pressure. Consult now!";
     const siteUrl = "https://drkhairulislam.vercel.app";
 
     const fullTitle = title ? `${title} | Dr. Khairul Islam` : siteTitle;

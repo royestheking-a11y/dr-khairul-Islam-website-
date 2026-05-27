@@ -1,10 +1,18 @@
 import { MapPin, Phone, Clock, Navigation } from 'lucide-react';
 import { Card, CardContent } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 
 export default function Chamber() {
   return (
     <div className="py-12">
+      <Helmet>
+        <title>Chamber Info | Dr. Khairul Islam | Best Doctor in Barguna, Bangladesh</title>
+        <meta name="description" content="Find the chamber address and visiting hours of Dr. Khairul Islam in Barguna, Bangladesh. Call or WhatsApp for serial booking. Best Medicine Doctor nearby." />
+        <meta name="keywords" content="Dr. Khairul Islam Chamber, Barguna Doctor Chamber, New Holy Care Pathology Barguna, Best Doctor in Bangladesh, Barguna Doctor Serial" />
+        <meta property="og:title" content="Chamber Info | Dr. Khairul Islam | Best Doctor in Barguna, Bangladesh" />
+        <meta property="og:description" content="Find the chamber address and visiting hours of Dr. Khairul Islam in Barguna, Bangladesh." />
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

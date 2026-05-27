@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 import { Phone, MessageCircle, MapPin, Clock, BadgeCheck, Heart, Users, Stethoscope, Calendar, GraduationCap, HeartHandshake, Baby, HelpCircle, Video, User, FileText, Send } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
@@ -40,6 +41,14 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
+      <Helmet>
+        <title>Dr. Khairul Islam - Best Medicine & Pain Specialist in Barguna, Bangladesh</title>
+        <meta name="description" content="Looking for the best Medicine and Pain Management Doctor in Barguna, Bangladesh? Dr. Khairul Islam provides trusted treatment for pain, diabetes, pressure, and general medicine. Book an appointment today!" />
+        <meta name="keywords" content="Dr. Khairul Islam, Best Doctor in Barguna, Best Medicine Specialist in Bangladesh, Pain Management Doctor Bangladesh, Barguna Doctor, Medicine Specialist, Top Doctor Bangladesh" />
+        <meta property="og:title" content="Dr. Khairul Islam - Best Medicine & Pain Specialist in Barguna, Bangladesh" />
+        <meta property="og:description" content="Looking for the best Medicine and Pain Management Doctor in Barguna, Bangladesh? Dr. Khairul Islam provides trusted treatment." />
+        <meta property="og:url" content="https://drkhairulislam.com/" />
+      </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 py-16 md:py-24 relative overflow-hidden">
         {/* Decorative background elements */}
