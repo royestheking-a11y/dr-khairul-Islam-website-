@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '@/app/context/LanguageContext';
 import { ScrollReveal } from '@/app/components/ScrollReveal';
 
-const doctorImage = '/doctor img.png';
+const doctorImage = '/drkhairulislam.png';
 
 export default function About() {
   const { t } = useLanguage();

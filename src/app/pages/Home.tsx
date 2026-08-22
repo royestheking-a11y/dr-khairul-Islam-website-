@@ -67,6 +67,7 @@ export default function Home() {
   const { t, language } = useLanguage();
   const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(null);
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [heroMediaMode, setHeroMediaMode] = useState<'video' | 'photo'>('video');
   const [formData, setFormData] = useState({ name: '', phone: '', age: '', problem: '', date: '' });
 
   // Keyboard navigation for video shorts modal
@@ -128,40 +129,81 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10 py-10 sm:py-16 md:py-20">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
 
-            {/* Right — 9:16 YouTube Short Reel Card — Priority 1 on mobile */}
+            {/* Right — 9:16 Media Card (Video / Photo Toggle) — Priority 1 on mobile */}
             <div className="lg:col-span-5 order-1 lg:order-2 flex flex-col items-center mt-6 lg:mt-0">
               <div className="relative w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[380px]">
                 {/* Soft ambient glow */}
                 <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
 
-                {/* 9:16 Video Reel Frame */}
+                {/* Media Switcher Pills */}
+                <div className="flex items-center justify-center mb-3">
+                  <div className="flex items-center bg-white/90 backdrop-blur-md rounded-full p-1 border border-teal-100 shadow-sm">
+                    <button
+                      type="button"
+                      onClick={() => setHeroMediaMode('video')}
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        heroMediaMode === 'video'
+                          ? 'bg-primary text-white shadow-xs'
+                          : 'text-slate-600 hover:text-primary'
+                      }`}
+                    >
+                      {language === 'en' ? '🎬 Video' : '🎬 ভিডিও'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHeroMediaMode('photo')}
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        heroMediaMode === 'photo'
+                          ? 'bg-primary text-white shadow-xs'
+                          : 'text-slate-600 hover:text-primary'
+                      }`}
+                    >
+                      {language === 'en' ? '🩺 Photo' : '🩺 ছবি'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* 9:16 Video / Photo Frame */}
                 <div className="relative bg-white/95 backdrop-blur-md p-2.5 sm:p-3.5 rounded-[2.2rem] sm:rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
                   <div className="relative rounded-[1.8rem] sm:rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
-                    {/* Top bar on video */}
-                    <div className="absolute top-0 left-0 right-0 z-20 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
-                        <span className="text-[11px] sm:text-xs font-bold tracking-wide">
-                          {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
-                        </span>
-                      </div>
-                      <div className="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded-full text-white flex items-center gap-1 text-[10px] sm:text-[11px] font-bold">
-                        <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
-                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                        </svg>
-                        <span>Shorts</span>
-                      </div>
-                    </div>
+                    {heroMediaMode === 'video' ? (
+                      <>
+                        {/* Top bar on video */}
+                        <div className="absolute top-0 left-0 right-0 z-20 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                            <span className="text-[11px] sm:text-xs font-bold tracking-wide">
+                              {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
+                            </span>
+                          </div>
+                          <div className="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded-full text-white flex items-center gap-1 text-[10px] sm:text-[11px] font-bold">
+                            <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                            </svg>
+                            <span>Shorts</span>
+                          </div>
+                        </div>
 
-                    {/* YouTube Shorts iframe Embed */}
-                    <iframe
-                      src={getYouTubeEmbedUrl(YOUTUBE_SHORTS_ID)}
-                      className="w-full h-full border-0 absolute inset-0 z-10"
-                      style={{ border: 'none' }}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen={true}
-                      title="Dr. Md. Khairul Islam Video Short"
-                    />
+                        {/* YouTube Shorts iframe Embed */}
+                        <iframe
+                          src={getYouTubeEmbedUrl(YOUTUBE_SHORTS_ID)}
+                          className="w-full h-full border-0 absolute inset-0 z-10"
+                          style={{ border: 'none' }}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen={true}
+                          title="Dr. Md. Khairul Islam Video Short"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {/* High-Resolution Doctor Portrait Photo */}
+                        <img
+                          src="/drkhairulislam.png"
+                          alt="ডা. মোঃ খাইরুল ইসলাম"
+                          className="w-full h-full object-cover object-top absolute inset-0 z-10 animate-fade-in"
+                        />
+                      </>
+                    )}
 
                     {/* Bottom Doctor Info Bar */}
                     <div className="absolute bottom-0 left-0 right-0 z-20 p-3 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
