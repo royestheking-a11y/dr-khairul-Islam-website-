@@ -165,10 +165,12 @@ export function Footer() {
 
           {/* Disclaimer */}
           <div className="mt-10 pt-6 border-t border-slate-800">
-            <p className="text-xs text-slate-500 text-center leading-relaxed flex items-center justify-center gap-2 flex-wrap">
-              <AlertTriangle className="h-3 w-3 text-amber-500 flex-shrink-0" />
-              {t.footer.disclaimer}
-            </p>
+            <div className="max-w-2xl mx-auto flex items-center justify-center">
+              <p className="text-xs text-slate-400 leading-relaxed text-center inline-flex items-center justify-center gap-2 px-4 py-2 rounded-2xl bg-slate-900/80 border border-slate-800/80 shadow-inner">
+                <AlertTriangle className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
+                <span>{t.footer.disclaimer}</span>
+              </p>
+            </div>
           </div>
 
           {/* Bottom Bar */}
