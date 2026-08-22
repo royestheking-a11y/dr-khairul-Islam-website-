@@ -5,7 +5,7 @@ import {
   Phone, MessageCircle, MapPin, Clock, BadgeCheck, Heart, Users,
   Stethoscope, Calendar, GraduationCap, HeartHandshake, Baby,
   HelpCircle, Video, User, FileText, ArrowRight, Star, Play, X,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Image as ImageIcon
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
@@ -135,30 +135,32 @@ export default function Home() {
                 {/* Soft ambient glow */}
                 <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
 
-                {/* Media Switcher Pills */}
+                {/* Media Switcher Pills with Premium Icons */}
                 <div className="flex items-center justify-center mb-3">
-                  <div className="flex items-center bg-white/90 backdrop-blur-md rounded-full p-1 border border-teal-100 shadow-sm">
+                  <div className="flex items-center bg-white/95 backdrop-blur-md rounded-full p-1 border border-teal-200/80 shadow-md">
                     <button
                       type="button"
                       onClick={() => setHeroMediaMode('video')}
-                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
                         heroMediaMode === 'video'
                           ? 'bg-primary text-white shadow-xs'
                           : 'text-slate-600 hover:text-primary'
                       }`}
                     >
-                      {language === 'en' ? '🎬 Video' : '🎬 ভিডিও'}
+                      <Video className="h-3.5 w-3.5" />
+                      <span>{language === 'en' ? 'Video Short' : 'ভিডিও শর্টস'}</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setHeroMediaMode('photo')}
-                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
                         heroMediaMode === 'photo'
                           ? 'bg-primary text-white shadow-xs'
                           : 'text-slate-600 hover:text-primary'
                       }`}
                     >
-                      {language === 'en' ? '🩺 Photo' : '🩺 ছবি'}
+                      <ImageIcon className="h-3.5 w-3.5" />
+                      <span>{language === 'en' ? 'Doctor Photo' : 'ডাক্তারের ছবি'}</span>
                     </button>
                   </div>
                 </div>
