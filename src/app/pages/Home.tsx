@@ -128,8 +128,71 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10 py-10 sm:py-16 md:py-20">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
 
-            {/* Left Content — Priority 1 on all devices */}
-            <div className="lg:col-span-7 order-1">
+            {/* Right — 9:16 YouTube Short Reel Card — Priority 1 on mobile */}
+            <div className="lg:col-span-5 order-1 lg:order-2 flex flex-col items-center mt-6 lg:mt-0">
+              <div className="relative w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[380px]">
+                {/* Soft ambient glow */}
+                <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
+
+                {/* 9:16 Video Reel Frame */}
+                <div className="relative bg-white/95 backdrop-blur-md p-2.5 sm:p-3.5 rounded-[2.2rem] sm:rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
+                  <div className="relative rounded-[1.8rem] sm:rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
+                    {/* Top bar on video */}
+                    <div className="absolute top-0 left-0 right-0 z-20 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                        <span className="text-[11px] sm:text-xs font-bold tracking-wide">
+                          {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
+                        </span>
+                      </div>
+                      <div className="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded-full text-white flex items-center gap-1 text-[10px] sm:text-[11px] font-bold">
+                        <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                        <span>Shorts</span>
+                      </div>
+                    </div>
+
+                    {/* YouTube Shorts iframe Embed */}
+                    <iframe
+                      src={getYouTubeEmbedUrl(YOUTUBE_SHORTS_ID)}
+                      className="w-full h-full border-0 absolute inset-0 z-10"
+                      style={{ border: 'none' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen={true}
+                      title="Dr. Md. Khairul Islam Video Short"
+                    />
+
+                    {/* Bottom Doctor Info Bar */}
+                    <div className="absolute bottom-0 left-0 right-0 z-20 p-3 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
+                      <p className="font-bold text-xs sm:text-sm leading-snug font-outfit">{t.hero.doctorName}</p>
+                      <p className="text-[10px] sm:text-[11px] text-gray-200 opacity-90 truncate">{t.header.specialty || 'Medicine & Pain Specialist'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Facebook Page Highlight Badge underneath video */}
+              <div className="mt-3 sm:mt-4 text-center">
+                <a
+                  href="https://www.facebook.com/drmdkhairulislams/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/95 hover:bg-white backdrop-blur-md rounded-full border border-blue-200 shadow-sm text-xs font-bold text-blue-700 hover:text-blue-800 transition-all hover:scale-105"
+                >
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                    <svg className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                  <span>{language === 'en' ? 'Follow on Facebook' : 'ফেসবুকে ফলো করুন'}</span>
+                  <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+            </div>
+
+            {/* Left Content — Priority 2 on mobile, 1 on desktop */}
+            <div className="lg:col-span-7 order-2 lg:order-1">
               {/* Badge */}
               <div className="badge-pill mb-4 sm:mb-6 animate-fade-up w-fit text-xs sm:text-sm">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
@@ -210,69 +273,6 @@ export default function Home() {
                     <p className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-tight font-medium text-center">{stat.label}</p>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Right — 9:16 YouTube Short Reel Card — Priority 2 */}
-            <div className="lg:col-span-5 order-2 flex flex-col items-center mt-6 lg:mt-0">
-              <div className="relative w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[380px]">
-                {/* Soft ambient glow */}
-                <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
-
-                {/* 9:16 Video Reel Frame */}
-                <div className="relative bg-white/95 backdrop-blur-md p-2.5 sm:p-3.5 rounded-[2.2rem] sm:rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
-                  <div className="relative rounded-[1.8rem] sm:rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
-                    {/* Top bar on video */}
-                    <div className="absolute top-0 left-0 right-0 z-20 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
-                        <span className="text-[11px] sm:text-xs font-bold tracking-wide">
-                          {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
-                        </span>
-                      </div>
-                      <div className="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded-full text-white flex items-center gap-1 text-[10px] sm:text-[11px] font-bold">
-                        <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
-                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                        </svg>
-                        <span>Shorts</span>
-                      </div>
-                    </div>
-
-                    {/* YouTube Shorts iframe Embed */}
-                    <iframe
-                      src={getYouTubeEmbedUrl(YOUTUBE_SHORTS_ID)}
-                      className="w-full h-full border-0 absolute inset-0 z-10"
-                      style={{ border: 'none' }}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen={true}
-                      title="Dr. Md. Khairul Islam Video Short"
-                    />
-
-                    {/* Bottom Doctor Info Bar */}
-                    <div className="absolute bottom-0 left-0 right-0 z-20 p-3 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
-                      <p className="font-bold text-xs sm:text-sm leading-snug font-outfit">{t.hero.doctorName}</p>
-                      <p className="text-[10px] sm:text-[11px] text-gray-200 opacity-90 truncate">{t.header.specialty || 'Medicine & Pain Specialist'}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Facebook Page Highlight Badge underneath video */}
-              <div className="mt-3 sm:mt-4 text-center">
-                <a
-                  href="https://www.facebook.com/drmdkhairulislams/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/95 hover:bg-white backdrop-blur-md rounded-full border border-blue-200 shadow-sm text-xs font-bold text-blue-700 hover:text-blue-800 transition-all hover:scale-105"
-                >
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-600 flex items-center justify-center text-white">
-                    <svg className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-current" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                  </div>
-                  <span>{language === 'en' ? 'Follow on Facebook' : 'ফেসবুকে ফলো করুন'}</span>
-                  <ArrowRight className="h-3 w-3" />
-                </a>
               </div>
             </div>
           </div>

@@ -24,7 +24,7 @@ export function Layout() {
 
   return (
     <LanguageProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
         <SEO
           keywords={[
             "Dr Khairul Islam",
