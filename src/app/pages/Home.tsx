@@ -125,78 +125,78 @@ export default function Home() {
           }}
         />
 
-        <div className="container mx-auto px-4 relative z-10 py-20">
-          <div className="grid lg:grid-cols-2 gap-14 items-center max-w-7xl mx-auto">
+        <div className="container mx-auto px-4 relative z-10 py-10 sm:py-16 md:py-20">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
 
-            {/* Left Content */}
-            <div className="order-2 lg:order-1">
+            {/* Left Content — Priority 1 on all devices */}
+            <div className="lg:col-span-7 order-1">
               {/* Badge */}
-              <div className="badge-pill mb-6 animate-fade-up w-fit">
+              <div className="badge-pill mb-4 sm:mb-6 animate-fade-up w-fit text-xs sm:text-sm">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                 {t.hero.badge}
               </div>
 
               {/* Main heading */}
-              <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 leading-tight animate-fade-up delay-100">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl xl:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight animate-fade-up delay-100">
                 <span className="gradient-text">{language === 'en' ? 'Medicine &' : 'মেডিসিন ও'}</span>{' '}
-                <br className="hidden md:block" />
+                <br className="hidden sm:block" />
                 {language === 'en' ? 'Interventional Pain Management Specialist' : 'ইন্টারভেনশনাল পেইন ম্যানেজমেন্ট বিশেষজ্ঞ'}
               </h1>
 
               {/* Credentials */}
-              <div className="space-y-3 mb-8 animate-fade-up delay-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-primary/20">
-                    <GraduationCap className="h-5 w-5 text-primary" />
+              <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8 animate-fade-up delay-200">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-primary/20">
+                    <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   </div>
-                  <p className="font-semibold text-gray-800">{t.hero.mbbs}</p>
+                  <p className="font-bold text-xs sm:text-sm md:text-base text-gray-800">{t.hero.mbbs}</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-accent/20">
-                    <Star className="h-5 w-5 text-accent" />
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-accent/20">
+                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                   </div>
-                  <p className="font-semibold text-gray-800">{t.hero.da}</p>
+                  <p className="font-bold text-xs sm:text-sm md:text-base text-gray-800">{t.hero.da}</p>
                 </div>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap items-center gap-3 mb-10 animate-fade-up delay-300">
-                <a href="#appointment-section">
-                  <Button size="lg" className="btn-premium text-white border-0 gap-2 text-base px-6 py-6">
-                    <Calendar className="h-5 w-5" />
-                    {t.hero.bookBtn}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8 sm:mb-10 animate-fade-up delay-300">
+                <a href="#appointment-section" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto btn-premium text-white border-0 gap-2 text-sm sm:text-base px-6 py-5 sm:py-6 shadow-lg shadow-teal-700/20">
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>{t.hero.bookBtn}</span>
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </a>
-                <a href="https://wa.me/8801725497355" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/8801725497355" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     variant="outline"
-                    className="gap-2 text-base px-6 py-6 border-2 border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 transition-all"
+                    className="w-full sm:w-auto gap-2 text-sm sm:text-base px-5 sm:px-6 py-5 sm:py-6 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all font-bold bg-white"
                   >
-                    <svg className="h-5 w-5 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
-                    {t.hero.whatsappBtn}
-                  </Button>
-                </a>
-                <a
-                  href="https://www.facebook.com/drmdkhairulislams/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3.5 bg-blue-50 hover:bg-blue-100/90 text-blue-700 border border-blue-200/80 rounded-xl font-bold text-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-                >
-                  <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white">
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                  </div>
-                  <span>{language === 'en' ? 'Facebook Page' : 'ফেসবুকে ফলো করুন'}</span>
-                </a>
+                      </svg>
+                      <span>{t.hero.whatsappBtn}</span>
+                    </Button>
+                  </a>
+                  <a
+                    href="https://www.facebook.com/drmdkhairulislams/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200/80 rounded-xl font-bold text-xs sm:text-sm transition-all hover:shadow-md"
+                  >
+                    <div className="w-5 h-5 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                      <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                      </svg>
+                    </div>
+                    <span>{language === 'en' ? 'Facebook Page' : 'ফেসবুক পেজ'}</span>
+                  </a>
               </div>
 
-              {/* Stats Row */}
-              <div className="grid grid-cols-4 gap-3 animate-fade-up delay-400">
+              {/* Stats Grid — 2 columns on mobile, 4 on desktop */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 animate-fade-up delay-400">
                 {[
                   { num: 5000, suffix: '+', label: t.stats.patientsLabel },
                   { num: 10, suffix: '+', label: t.stats.experienceLabel },
@@ -204,34 +204,34 @@ export default function Home() {
                   { num: 99, suffix: '%', label: t.stats.satisfactionLabel },
                 ].map((stat, i) => (
                   <div key={i} className="stat-card">
-                    <div className="text-2xl font-bold gradient-text font-outfit">
+                    <div className="text-xl sm:text-2xl md:text-3xl font-extrabold gradient-text font-outfit whitespace-nowrap">
                       <AnimatedCounter target={stat.num} suffix={stat.suffix} duration={1500 + i * 200} />
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 leading-tight">{stat.label}</p>
+                    <p className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-tight font-medium text-center">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right — 9:16 YouTube Short Reel Card */}
-            <div className="order-1 lg:order-2 flex flex-col items-center">
-              <div className="relative w-full max-w-[380px] lg:max-w-[400px]">
+            {/* Right — 9:16 YouTube Short Reel Card — Priority 2 */}
+            <div className="lg:col-span-5 order-2 flex flex-col items-center mt-6 lg:mt-0">
+              <div className="relative w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[380px]">
                 {/* Soft ambient glow */}
                 <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
 
-                {/* 9:16 Video Reel / YouTube Shorts Frame */}
-                <div className="relative bg-white/95 backdrop-blur-md p-3.5 rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
-                  <div className="relative rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
+                {/* 9:16 Video Reel Frame */}
+                <div className="relative bg-white/95 backdrop-blur-md p-2.5 sm:p-3.5 rounded-[2.2rem] sm:rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
+                  <div className="relative rounded-[1.8rem] sm:rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
                     {/* Top bar on video */}
-                    <div className="absolute top-0 left-0 right-0 z-20 p-3.5 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping" />
-                        <span className="text-xs font-bold tracking-wide">
+                    <div className="absolute top-0 left-0 right-0 z-20 p-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                        <span className="text-[11px] sm:text-xs font-bold tracking-wide">
                           {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
                         </span>
                       </div>
-                      <div className="bg-red-600/90 backdrop-blur-md px-2.5 py-1 rounded-full text-white flex items-center gap-1 text-[11px] font-bold">
-                        <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                      <div className="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded-full text-white flex items-center gap-1 text-[10px] sm:text-[11px] font-bold">
+                        <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
                           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                         </svg>
                         <span>Shorts</span>
@@ -249,28 +249,28 @@ export default function Home() {
                     />
 
                     {/* Bottom Doctor Info Bar */}
-                    <div className="absolute bottom-0 left-0 right-0 z-20 p-3.5 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
-                      <p className="font-bold text-sm leading-snug font-outfit">{t.hero.doctorName}</p>
-                      <p className="text-[11px] text-gray-200 opacity-90 truncate">{t.header.specialty || 'Medicine & Pain Specialist'}</p>
+                    <div className="absolute bottom-0 left-0 right-0 z-20 p-3 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
+                      <p className="font-bold text-xs sm:text-sm leading-snug font-outfit">{t.hero.doctorName}</p>
+                      <p className="text-[10px] sm:text-[11px] text-gray-200 opacity-90 truncate">{t.header.specialty || 'Medicine & Pain Specialist'}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Facebook Page Highlight Badge underneath video */}
-              <div className="mt-4 text-center">
+              <div className="mt-3 sm:mt-4 text-center">
                 <a
                   href="https://www.facebook.com/drmdkhairulislams/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white backdrop-blur-md rounded-full border border-blue-200 shadow-sm text-xs font-bold text-blue-700 hover:text-blue-800 transition-all hover:scale-105 hover:shadow-md"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/95 hover:bg-white backdrop-blur-md rounded-full border border-blue-200 shadow-sm text-xs font-bold text-blue-700 hover:text-blue-800 transition-all hover:scale-105"
                 >
-                  <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-white">
-                    <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                    <svg className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-current" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                   </div>
-                  <span>{language === 'en' ? 'Follow on Official Facebook Page' : 'অফিশিয়াল ফেসবুক পেজে যুক্ত থাকুন'}</span>
+                  <span>{language === 'en' ? 'Follow on Facebook' : 'ফেসবুকে ফলো করুন'}</span>
                   <ArrowRight className="h-3 w-3" />
                 </a>
               </div>
@@ -972,16 +972,16 @@ export default function Home() {
             <div className="max-w-2xl mx-auto">
               <h2 className="text-3xl md:text-5xl font-bold mb-4 font-outfit">{t.cta.heading}</h2>
               <p className="text-lg mb-10 opacity-90">{t.cta.subheading}</p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <a href="tel:01725497355">
-                  <Button size="lg" className="gap-2 bg-white text-primary hover:bg-gray-50 font-bold px-8 py-6 text-base shadow-xl">
-                    <Phone className="h-5 w-5" />
-                    {t.cta.callBtn}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
+                <a href="tel:01725497355" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-white text-primary hover:bg-gray-50 font-bold px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base shadow-xl">
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>{t.cta.callBtn}</span>
                   </Button>
                 </a>
-                <Link to="/online-consultation">
-                  <Button size="lg" variant="outline" className="bg-white/15 hover:bg-white/25 text-white border-2 border-white/50 px-8 py-6 text-base font-bold">
-                    {t.cta.onlineBtn}
+                <Link to="/online-consultation" className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/15 hover:bg-white/25 text-white border-2 border-white/50 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-bold">
+                    <span>{t.cta.onlineBtn}</span>
                   </Button>
                 </Link>
               </div>
