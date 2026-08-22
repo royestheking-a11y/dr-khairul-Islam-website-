@@ -7,6 +7,7 @@ import Chamber from '@/app/pages/Chamber';
 import Fees from '@/app/pages/Fees';
 import Appointment from '@/app/pages/Appointment';
 import OnlineConsultation from '@/app/pages/OnlineConsultation';
+import Reviews from '@/app/pages/Reviews';
 import FAQ from '@/app/pages/FAQ';
 import NotFound from '@/app/pages/NotFound';
 
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: 'about', Component: About },
       { path: 'services', Component: Services },
+      { path: 'reviews', Component: Reviews },
       { path: 'chamber', Component: Chamber },
       { path: 'fees', Component: Fees },
       { path: 'appointment', Component: Appointment },

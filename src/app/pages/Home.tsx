@@ -1,635 +1,1117 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { Helmet } from 'react-helmet-async';
-import { Phone, MessageCircle, MapPin, Clock, BadgeCheck, Heart, Users, Stethoscope, Calendar, GraduationCap, HeartHandshake, Baby, HelpCircle, Video, User, FileText, Send } from 'lucide-react';
+import {
+  Phone, MessageCircle, MapPin, Clock, BadgeCheck, Heart, Users,
+  Stethoscope, Calendar, GraduationCap, HeartHandshake, Baby,
+  HelpCircle, Video, User, FileText, ArrowRight, Star, Play, X,
+  ChevronLeft, ChevronRight
+} from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
-const doctorImage = "/doctor img.png";
+import { useLanguage } from '@/app/context/LanguageContext';
+import { ScrollReveal } from '@/app/components/ScrollReveal';
+import { AnimatedCounter } from '@/app/components/AnimatedCounter';
+import { ChamberStatus } from '@/app/components/ChamberStatus';
+import { SymptomGuide } from '@/app/components/SymptomGuide';
+import { HealthTips } from '@/app/components/HealthTips';
+
+// YouTube Shorts Video ID or URL (Dr. Khairul Islam Hero Reel)
+const YOUTUBE_SHORTS_ID = 'https://youtube.com/shorts/HFOwEiIrszY?si=JTRpgWv6taLWNHss';
+
+// 20 Patient Video Review Shorts
+const REVIEW_SHORTS = [
+  { id: 'zMaPJICsdEo', titleBn: 'রোগীর সুস্থতার বাস্তব অভিজ্ঞতা ও অনুভূতি', titleEn: 'Patient Recovery Experience & Feedback', tagBn: 'পেইন রিলিফ', tagEn: 'Pain Relief' },
+  { id: 'gA9yo-uKzoQ', titleBn: 'দীর্ঘমেয়াদী ব্যথা উপশমে রোগীর সন্তুষ্টি', titleEn: 'Chronic Pain Relief & Patient Satisfaction', tagBn: 'ব্যথা নিরাময়', tagEn: 'Pain Treatment' },
+  { id: 'I1fmwbpbq3U', titleBn: 'সফল চিকিৎসা পরবর্তী রোগীর প্রতিক্রিয়া', titleEn: 'Post-Treatment Patient Recovery Story', tagBn: 'সফল চিকিৎসা', tagEn: 'Success Story' },
+  { id: 'vOL37rAv9-g', titleBn: 'ইন্টারভেনশনাল পেইন চিকিৎসায় রোগীর মুখে হাসি', titleEn: 'Interventional Pain Treatment Experience', tagBn: 'পেইন বিশেষজ্ঞ', tagEn: 'Pain Specialist' },
+  { id: 'PbqG4kV3UyU', titleBn: 'হাঁটু ও জয়েন্ট ব্যথার কার্যকর চিকিৎসা মতামত', titleEn: 'Knee & Joint Pain Treatment Review', tagBn: 'জয়েন্ট পেইন', tagEn: 'Joint Pain' },
+  { id: 'YZ59PmkD2-M', titleBn: 'চিকিৎসা শেষে রোগীর অভিজ্ঞতা ও সন্তুষ্টি', titleEn: 'Patient Review After Successful Care', tagBn: 'রোগী সন্তুষ্টি', tagEn: 'Satisfaction' },
+  { id: 'MALxGtOZIjI', titleBn: 'মেরুদণ্ড ও কোমর ব্যথার চিকিৎসা প্রতিক্রিয়া', titleEn: 'Spine & Back Pain Relief Feedback', tagBn: 'কোমর ব্যথা', tagEn: 'Back Pain' },
+  { id: 'rlu8hUVvfR4', titleBn: 'ডা. খাইরুল ইসলাম স্যারের চিকিৎসা রিভিউ', titleEn: 'Dr. Khairul Islam Treatment Review', tagBn: 'মেডিসিন সেবা', tagEn: 'Medicine Care' },
+  { id: 'AbOVSx-cT64', titleBn: 'তীব্র ব্যথা থেকে দ্রুত আরোগ্য লাভের গল্প', titleEn: 'Fast Recovery from Severe Acute Pain', tagBn: 'তীব্র ব্যথা', tagEn: 'Acute Pain' },
+  { id: 'KzWQyE55bOA', titleBn: 'রোগীর মুখে চিকিৎসার বিস্তারিত অভিজ্ঞতা', titleEn: 'Detailed Patient Experience & Treatment', tagBn: 'অভিজ্ঞতা', tagEn: 'Experience' },
+  { id: 'I40nkcJIaJc', titleBn: 'ঘাড় ও কাঁধের ব্যথার সফল চিকিৎসা রিভিউ', titleEn: 'Neck & Shoulder Pain Relief Story', tagBn: 'ঘাড় ব্যথা', tagEn: 'Neck Pain' },
+  { id: 'F5b00CiN0MY', titleBn: 'আধুনিক পেইন ম্যানেজমেন্টে সুস্থতা লাভ', titleEn: 'Recovery Through Modern Pain Management', tagBn: 'পেইন ম্যানেজমেন্ট', tagEn: 'Pain Mgmt' },
+  { id: 'lR5DIQ5s-qc', titleBn: 'রোগীর আন্তরিক অনুভূতি ও কৃতজ্ঞতা', titleEn: 'Patient Gratitude & Recovery Thoughts', tagBn: 'কৃতজ্ঞতা', tagEn: 'Testimonial' },
+  { id: '8eQxLl8wQKE', titleBn: 'পুরাতন ব্যথার স্থায়ী নিরাময়ে রোগীর কথা', titleEn: 'Long-term Pain Solution Patient Review', tagBn: 'স্থায়ী সমাধান', tagEn: 'Relief' },
+  { id: 'AKcG2IX3NbI', titleBn: 'বিশেষায়িত চিকিৎসা সেবায় সন্তুষ্ট রোগী', titleEn: 'Satisfied Patient with Specialized Care', tagBn: 'বিশেষায়িত সেবা', tagEn: 'Specialized' },
+  { id: '1euPlxQDKBE', titleBn: 'রোগী ও স্বজনদের আস্থা ও ভালোবাসার গল্প', titleEn: 'Patient & Family Trust & Review', tagBn: 'বিশ্বস্ত চিকিৎসা', tagEn: 'Trusted Care' },
+  { id: 'Vx0_Ygwesv4', titleBn: 'ব্যথা নিরাময়ে দ্রুত আরোগ্য লাভের অনুভূতি', titleEn: 'Fast Pain Recovery Patient Testimonial', tagBn: 'পেইন নিরাময়', tagEn: 'Pain Recovery' },
+  { id: 'vuAuBO_pW-M', titleBn: 'চিকিৎসা শেষে রোগীর মুখে তৃপ্তির হাসি', titleEn: 'Patient Happiness After Successful Treatment', tagBn: 'সফল চিকিৎসা', tagEn: 'Success Story' },
+  { id: 'Ds0JL8ztqmc', titleBn: 'কোমর ও জয়েন্ট ব্যথার কার্যকর সমাধান', titleEn: 'Effective Back & Joint Pain Solution', tagBn: 'জয়েন্ট পেইন', tagEn: 'Joint Pain' },
+  { id: 'axvlYf28TFE', titleBn: 'আধুনিক চিকিৎসায় জটিল রোগের উপশম', titleEn: 'Complex Health Relief with Modern Care', tagBn: 'বিশেষায়িত সেবা', tagEn: 'Specialized' },
+];
+
+function getYouTubeEmbedUrl(input: string, autoplay = false) {
+  const autoParam = autoplay ? '&autoplay=1' : '';
+  if (input.includes('/shorts/')) {
+    const id = input.split('/shorts/')[1]?.split('?')[0]?.split('/')[0];
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${autoParam}`;
+  }
+  if (input.includes('v=')) {
+    const id = input.split('v=')[1]?.split('&')[0];
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${autoParam}`;
+  }
+  if (input.includes('youtu.be/')) {
+    const id = input.split('youtu.be/')[1]?.split('?')[0];
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${autoParam}`;
+  }
+  return `https://www.youtube-nocookie.com/embed/${input}?rel=0&modestbranding=1&playsinline=1${autoParam}`;
+}
 
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    age: '',
-    problem: '',
-    date: '',
-  });
+  const { t, language } = useLanguage();
+  const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(null);
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', age: '', problem: '', date: '' });
+
+  // Keyboard navigation for video shorts modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedReviewIndex === null) return;
+      if (e.key === 'Escape') setSelectedReviewIndex(null);
+      if (e.key === 'ArrowLeft') {
+        setSelectedReviewIndex((prev) =>
+          prev !== null ? (prev - 1 + REVIEW_SHORTS.length) % REVIEW_SHORTS.length : 0
+        );
+      }
+      if (e.key === 'ArrowRight') {
+        setSelectedReviewIndex((prev) =>
+          prev !== null ? (prev + 1) % REVIEW_SHORTS.length : 0
+        );
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedReviewIndex]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const message = `আসসালামু আলাইকুম\nআমি ডা. মোঃ খাইরুল ইসলাম স্যারের কাছে সিরিয়াল নিতে চাই।\n\nনাম: ${formData.name}\nমোবাইল: ${formData.phone}\nবয়স: ${formData.age}\nসমস্যা: ${formData.problem}\nতারিখ: ${formData.date}`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/8801725497355?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/8801725497355?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const faqs = [
-    { question: 'সিরিয়াল কিভাবে নেবো?', answer: 'আপনি তিনটি উপায়ে সিরিয়াল নিতে পারেন: ১) ওয়েবসাইটের সিরিয়াল ফর্ম পূরণ করে WhatsApp এ পাঠান, ২) সরাসরি ০১৭২৫-৪৯৭৩৫৫ নাম্বারে কল করুন, ৩) WhatsApp এ মেসেজ পাঠান।' },
-    { question: 'Follow-up কখন করতে হবে?', answer: 'প্রথম পরামর্শের পর চিকিৎসক যে সময় নির্ধারণ করে দিবেন সেই সময় Follow-up করতে হবে। সাধারণত ৭-১৫ দিনের মধ্যে Follow-up করা হয়।' },
-    { question: 'Follow-up ফি কত?', answer: 'Follow-up ফি ৩০০ টাকা। তবে এটি প্রথম পরামর্শের ১৫ দিনের মধ্যে প্রযোজ্য। আগের রসিদ সাথে আনতে হবে।' },
-    { question: 'পেইন মেডিসিন কি?', answer: 'পেইন মেডিসিন হলো একটি বিশেষায়িত চিকিৎসা শাখা যেখানে বিভিন্ন ধরনের ব্যথার কারণ নির্ণয় করে আধুনিক পদ্ধতিতে চিকিৎসা প্রদান করা হয়।' },
-    { question: 'আল্ট্রাসনোগ্রাফির খরচ কত?', answer: 'গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি মাত্র ৫০০ টাকায় করা হয়। এটি একটি বিশেষ মূল্যে প্রদান করা সেবা।' },
-    { question: 'প্রতিবন্ধীদের ফ্রী চিকিৎসা কিভাবে পাবো?', answer: 'প্রতিবন্ধী পরিচয়পত্র অথবা প্রাসঙ্গিক কাগজপত্র সাথে নিয়ে চেম্বারে আসুন। আপনাকে সম্পূর্ণ বিনামূল্যে পরামর্শ ও চিকিৎসা সেবা প্রদান করা হবে।' },
-  ];
-
   return (
     <div className="flex flex-col">
       <Helmet>
         <title>Dr. Khairul Islam - Best Medicine & Pain Specialist in Barguna, Bangladesh</title>
-        <meta name="description" content="Looking for the best Medicine and Pain Management Doctor in Barguna, Bangladesh? Dr. Khairul Islam provides trusted treatment for pain, diabetes, pressure, and general medicine. Book an appointment today!" />
-        <meta name="keywords" content="Dr. Khairul Islam, Best Doctor in Barguna, Best Medicine Specialist in Bangladesh, Pain Management Doctor Bangladesh, Barguna Doctor, Medicine Specialist, Top Doctor Bangladesh" />
-        <meta property="og:title" content="Dr. Khairul Islam - Best Medicine & Pain Specialist in Barguna, Bangladesh" />
-        <meta property="og:description" content="Looking for the best Medicine and Pain Management Doctor in Barguna, Bangladesh? Dr. Khairul Islam provides trusted treatment." />
+        <meta name="description" content="Best Medicine and Interventional Pain Management Specialist in Barguna, Bangladesh. Book appointment online." />
+        <meta property="og:title" content="Dr. Khairul Islam - Best Medicine & Pain Specialist in Barguna" />
         <meta property="og:url" content="https://drkhairulislam.com/" />
       </Helmet>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 py-16 md:py-24 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-primary rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
-        </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+      {/* ═══════════════════════════════════════
+          HERO SECTION — Premium Animated
+      ═══════════════════════════════════════ */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden gradient-hero">
+        {/* Animated gradient orbs */}
+        <div className="orb orb-1 w-96 h-96 top-[-10%] left-[-10%] bg-teal-400/15" />
+        <div className="orb orb-2 w-[500px] h-[500px] bottom-[-20%] right-[-10%] bg-cyan-300/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-200/8 rounded-full blur-3xl" />
+
+        {/* Decorative dots grid */}
+        <div className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #0D9488 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+
+        <div className="container mx-auto px-4 relative z-10 py-20">
+          <div className="grid lg:grid-cols-2 gap-14 items-center max-w-7xl mx-auto">
+
             {/* Left Content */}
-            <div className="order-1">
-              <div className="inline-block mb-4 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-teal-200">
-                <p className="text-sm font-medium text-primary flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-                  বিশ্বাসযোগ্য চিকিৎসা • আধুনিক পেইন ম্যানেজমেন্ট
-                </p>
+            <div className="order-2 lg:order-1">
+              {/* Badge */}
+              <div className="badge-pill mb-6 animate-fade-up w-fit">
+                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                {t.hero.badge}
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                মেডিসিন ও ইন্টারভেনশনাল পেইন ম্যানেজমেন্ট বিশেষজ্ঞ
+              {/* Main heading */}
+              <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 leading-tight animate-fade-up delay-100">
+                <span className="gradient-text">{language === 'en' ? 'Medicine &' : 'মেডিসিন ও'}</span>{' '}
+                <br className="hidden md:block" />
+                {language === 'en' ? 'Interventional Pain Management Specialist' : 'ইন্টারভেনশনাল পেইন ম্যানেজমেন্ট বিশেষজ্ঞ'}
               </h1>
 
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3 text-gray-700">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              {/* Credentials */}
+              <div className="space-y-3 mb-8 animate-fade-up delay-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-primary/20">
                     <GraduationCap className="h-5 w-5 text-primary" />
                   </div>
-                  <p className="font-semibold">এম.বি.বি.এস (শের-ই-বাংলা মেডিকেল কলেজ)</p>
+                  <p className="font-semibold text-gray-800">{t.hero.mbbs}</p>
                 </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Stethoscope className="h-5 w-5 text-accent" />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-accent/20">
+                    <Star className="h-5 w-5 text-accent" />
                   </div>
-                  <p className="font-semibold">ডিএ (BSMMU) | FIPM (India)</p>
+                  <p className="font-semibold text-gray-800">{t.hero.da}</p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap items-center gap-3 mb-10 animate-fade-up delay-300">
                 <a href="#appointment-section">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/30 gap-2 text-base">
+                  <Button size="lg" className="btn-premium text-white border-0 gap-2 text-base px-6 py-6">
                     <Calendar className="h-5 w-5" />
-                    সিরিয়াল নিন
+                    {t.hero.bookBtn}
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
                 </a>
+                <a href="https://wa.me/8801725497355" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="gap-2 text-base px-6 py-6 border-2 border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 transition-all"
+                  >
+                    <svg className="h-5 w-5 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    {t.hero.whatsappBtn}
+                  </Button>
+                </a>
+                <a
+                  href="https://www.facebook.com/drmdkhairulislams/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 bg-blue-50 hover:bg-blue-100/90 text-blue-700 border border-blue-200/80 rounded-xl font-bold text-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                >
+                  <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                  <span>{language === 'en' ? 'Facebook Page' : 'ফেসবুকে ফলো করুন'}</span>
+                </a>
+              </div>
+
+              {/* Stats Row */}
+              <div className="grid grid-cols-4 gap-3 animate-fade-up delay-400">
+                {[
+                  { num: 5000, suffix: '+', label: t.stats.patientsLabel },
+                  { num: 10, suffix: '+', label: t.stats.experienceLabel },
+                  { num: 6, suffix: '', label: t.stats.specialtiesLabel },
+                  { num: 99, suffix: '%', label: t.stats.satisfactionLabel },
+                ].map((stat, i) => (
+                  <div key={i} className="stat-card">
+                    <div className="text-2xl font-bold gradient-text font-outfit">
+                      <AnimatedCounter target={stat.num} suffix={stat.suffix} duration={1500 + i * 200} />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 leading-tight">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — 9:16 YouTube Short Reel Card */}
+            <div className="order-1 lg:order-2 flex flex-col items-center">
+              <div className="relative w-full max-w-[380px] lg:max-w-[400px]">
+                {/* Soft ambient glow */}
+                <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/15 to-accent/15 blur-2xl -z-10" />
+
+                {/* 9:16 Video Reel / YouTube Shorts Frame */}
+                <div className="relative bg-white/95 backdrop-blur-md p-3.5 rounded-[2.5rem] shadow-2xl border border-white/90 w-full">
+                  <div className="relative rounded-[2rem] overflow-hidden bg-slate-950 aspect-[9/16] shadow-inner flex flex-col justify-between group">
+                    {/* Top bar on video */}
+                    <div className="absolute top-0 left-0 right-0 z-20 p-3.5 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between text-white pointer-events-none">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping" />
+                        <span className="text-xs font-bold tracking-wide">
+                          {language === 'en' ? 'YouTube Short' : 'ইউটিউব শর্টস'}
+                        </span>
+                      </div>
+                      <div className="bg-red-600/90 backdrop-blur-md px-2.5 py-1 rounded-full text-white flex items-center gap-1 text-[11px] font-bold">
+                        <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                        <span>Shorts</span>
+                      </div>
+                    </div>
+
+                    {/* YouTube Shorts iframe Embed */}
+                    <iframe
+                      src={getYouTubeEmbedUrl(YOUTUBE_SHORTS_ID)}
+                      className="w-full h-full border-0 absolute inset-0 z-10"
+                      style={{ border: 'none' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen={true}
+                      title="Dr. Md. Khairul Islam Video Short"
+                    />
+
+                    {/* Bottom Doctor Info Bar */}
+                    <div className="absolute bottom-0 left-0 right-0 z-20 p-3.5 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white pointer-events-none">
+                      <p className="font-bold text-sm leading-snug font-outfit">{t.hero.doctorName}</p>
+                      <p className="text-[11px] text-gray-200 opacity-90 truncate">{t.header.specialty || 'Medicine & Pain Specialist'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Facebook Page Highlight Badge underneath video */}
+              <div className="mt-4 text-center">
+                <a
+                  href="https://www.facebook.com/drmdkhairulislams/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white backdrop-blur-md rounded-full border border-blue-200 shadow-sm text-xs font-bold text-blue-700 hover:text-blue-800 transition-all hover:scale-105 hover:shadow-md"
+                >
+                  <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                    <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                  <span>{language === 'en' ? 'Follow on Official Facebook Page' : 'অফিশিয়াল ফেসবুক পেজে যুক্ত থাকুন'}</span>
+                  <ArrowRight className="h-3 w-3" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          CHAMBER LIVE STATUS & QUICK INFO CARDS
+      ═══════════════════════════════════════ */}
+      <section className="py-8 bg-gradient-to-b from-teal-50/20 to-white">
+        <div className="container mx-auto px-4 space-y-6">
+          <ScrollReveal>
+            <ChamberStatus />
+          </ScrollReveal>
+
+          <ScrollReveal delay={100}>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { icon: MapPin, label: t.quickInfo.chamber, value: t.quickInfo.chamberName, color: 'text-primary', bg: 'bg-primary/8', href: '/chamber' },
+                { icon: MapPin, label: t.quickInfo.address, value: t.quickInfo.addressText, color: 'text-blue-600', bg: 'bg-blue-50', href: 'https://maps.app.goo.gl/VohUnA2Zuz8gJkiN8', isExternal: true },
+                { icon: Clock, label: t.quickInfo.consultFee, value: t.quickInfo.consultFeeAmount, color: 'text-emerald-600', bg: 'bg-emerald-50', href: '/fees' },
+                { icon: Clock, label: t.quickInfo.followupFee, value: t.quickInfo.followupFeeAmount, color: 'text-purple-600', bg: 'bg-purple-50', href: '/fees' },
+              ].map((item, i) => (
+                <div key={i}>
+                  {item.isExternal ? (
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="block bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group h-full">
+                      <div className={`w-10 h-10 ${item.bg} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                        <item.icon className={`h-5 w-5 ${item.color}`} />
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-1 font-medium">{item.label}</p>
+                      <p className="text-sm font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">{item.value}</p>
+                      <span className="inline-flex items-center gap-1 text-[11px] text-teal-600 font-semibold mt-2">545C+V2 Barguna ↗</span>
+                    </a>
+                  ) : (
+                    <Link to={item.href} className="block bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group h-full">
+                      <div className={`w-10 h-10 ${item.bg} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                        <item.icon className={`h-5 w-5 ${item.color}`} />
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-1 font-medium">{item.label}</p>
+                      <p className="text-sm font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">{item.value}</p>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          SERVICES SNAPSHOT
+      ═══════════════════════════════════════ */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-teal-50/30">
+        <div className="container mx-auto px-4">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <div className="badge-pill mb-4 mx-auto w-fit">
+                <Stethoscope className="h-3.5 w-3.5" />
+                {language === 'en' ? 'What We Treat' : 'আমাদের সেবা'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.services.heading}
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">{t.services.subheading}</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: Stethoscope, title: t.services.medicine, desc: t.services.medicineDesc, gradient: 'from-teal-50 to-cyan-50', iconBg: 'bg-teal-100', iconColor: 'text-teal-700', border: 'border-teal-100' },
+              { icon: Heart, title: t.services.pain, desc: t.services.painDesc, gradient: 'from-red-50 to-pink-50', iconBg: 'bg-red-100', iconColor: 'text-red-600', border: 'border-red-100' },
+              { icon: BadgeCheck, title: t.services.painMgmt, desc: t.services.painMgmtDesc, gradient: 'from-blue-50 to-indigo-50', iconBg: 'bg-blue-100', iconColor: 'text-blue-700', border: 'border-blue-100' },
+              { icon: Users, title: t.services.ultrasound, desc: t.services.ultrasoundDesc, gradient: 'from-purple-50 to-pink-50', iconBg: 'bg-purple-100', iconColor: 'text-purple-700', border: 'border-purple-100' },
+            ].map((service, i) => (
+              <ScrollReveal key={i} delay={i * 100}>
+                <div className={`premium-card bg-gradient-to-br ${service.gradient} rounded-2xl p-6 border ${service.border} h-full group cursor-default`}>
+                  <div className={`w-14 h-14 ${service.iconBg} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
+                    <service.icon className={`h-7 w-7 ${service.iconColor}`} />
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2 text-lg">{service.title}</h3>
+                  <p className="text-sm text-muted-foreground">{service.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <ScrollReveal>
+            <div className="text-center mt-10">
+              <Link to="/services">
+                <Button variant="outline" size="lg" className="gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all px-8">
+                  {t.services.viewAll}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          INTERACTIVE SYMPTOM GUIDE
+      ═══════════════════════════════════════ */}
+      <SymptomGuide />
+
+      {/* ═══════════════════════════════════════
+          PATIENT VIDEO REVIEWS & SHORTS SECTION
+      ═══════════════════════════════════════ */}
+      <section id="reviews-section" className="py-20 relative overflow-hidden bg-slate-900 text-white">
+        {/* Background ambient lighting */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-400/30 text-teal-300 text-xs font-bold mb-4">
+                <Video className="h-3.5 w-3.5" />
+                <span>{t.reviews.badge}</span>
+                <span className="px-2 py-0.5 bg-red-600 text-white rounded-full text-[10px] font-extrabold uppercase">Shorts</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 font-outfit">
+                {t.reviews.heading}
+              </h2>
+              <p className="text-slate-300 max-w-2xl mx-auto text-base">
+                {t.reviews.subheading}
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Video Grid (8 initially, expand to 16) */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
+            {(showAllReviews ? REVIEW_SHORTS : REVIEW_SHORTS.slice(0, 8)).map((review, i) => (
+              <ScrollReveal key={review.id} delay={(i % 4) * 80}>
+                <div
+                  onClick={() => setSelectedReviewIndex(i)}
+                  className="group relative rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 hover:border-teal-400/60 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 cursor-pointer transform hover:-translate-y-1.5 flex flex-col aspect-[9/16]"
+                >
+                  {/* Thumbnail Image */}
+                  <img
+                    src={`https://i.ytimg.com/vi/${review.id}/hqdefault.jpg`}
+                    alt={language === 'en' ? review.titleEn : review.titleBn}
+                    className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/60 group-hover:via-black/20 transition-all" />
+
+                  {/* Top Bar: Tag + YouTube Shorts Icon */}
+                  <div className="relative z-10 p-3.5 flex items-center justify-between">
+                    <span className="px-2.5 py-1 bg-black/50 backdrop-blur-md rounded-full text-[11px] font-bold text-teal-300 border border-teal-400/30">
+                      {language === 'en' ? review.tagEn : review.tagBn}
+                    </span>
+                    <div className="w-7 h-7 rounded-full bg-red-600/90 flex items-center justify-center text-white shadow-md">
+                      <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Center Play Button Overlay */}
+                  <div className="relative z-10 my-auto flex flex-col items-center justify-center">
+                    <div className="w-14 h-14 rounded-full bg-primary/90 group-hover:bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/40 group-hover:scale-110 transition-all duration-300 border-2 border-white/80">
+                      <Play className="h-6 w-6 fill-current translate-x-0.5" />
+                    </div>
+                    <span className="text-[11px] font-semibold text-white/90 mt-2 px-2.5 py-0.5 bg-black/60 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                      {t.reviews.playVideo}
+                    </span>
+                  </div>
+
+                  {/* Bottom Info Bar */}
+                  <div className="relative z-10 p-3.5 mt-auto">
+                    {/* Stars */}
+                    <div className="flex items-center gap-1 mb-1.5 text-amber-400">
+                      {[...Array(5)].map((_, idx) => (
+                        <Star key={idx} className="h-3 w-3 fill-current" />
+                      ))}
+                      <span className="text-[10px] text-slate-300 ml-1">5.0</span>
+                    </div>
+
+                    <h4 className="font-bold text-xs sm:text-sm text-white leading-snug line-clamp-2 font-outfit mb-1 group-hover:text-teal-300 transition-colors">
+                      {language === 'en' ? review.titleEn : review.titleBn}
+                    </h4>
+
+                    <div className="flex items-center justify-between text-[11px] text-teal-400">
+                      <span className="flex items-center gap-1">
+                        <BadgeCheck className="h-3.5 w-3.5" />
+                        {t.reviews.verifiedTag}
+                      </span>
+                      <span className="text-slate-400 group-hover:text-white transition-colors flex items-center gap-0.5">
+                        Shorts ↗
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Show More / Show Less Button */}
+          <ScrollReveal>
+            <div className="text-center mt-12">
+              <Button
+                onClick={() => setShowAllReviews(!showAllReviews)}
+                size="lg"
+                className="btn-premium text-white border-0 gap-2 px-8 py-6 text-base font-bold shadow-lg shadow-teal-500/20"
+              >
+                <Video className="h-5 w-5" />
+                {showAllReviews ? t.reviews.showLess : `${t.reviews.showMore} (${REVIEW_SHORTS.length})`}
+                <ArrowRight className={`h-4 w-4 transition-transform ${showAllReviews ? '-rotate-90' : 'rotate-90'}`} />
+              </Button>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          9:16 THEATER SHORTS MODAL PLAYER
+      ═══════════════════════════════════════ */}
+      {selectedReviewIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/90 backdrop-blur-md animate-fade-in">
+          {/* Backdrop Click to Close */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setSelectedReviewIndex(null)}
+          />
+
+          {/* Modal Centered Wrapper */}
+          <div className="relative z-10 flex items-center justify-center gap-3 sm:gap-6 w-full max-w-5xl h-[92vh] max-h-[760px]">
+            {/* Side Previous Arrow (Desktop/Tablet) */}
+            <button
+              type="button"
+              onClick={() =>
+                setSelectedReviewIndex((prev) =>
+                  prev !== null ? (prev - 1 + REVIEW_SHORTS.length) % REVIEW_SHORTS.length : 0
+                )
+              }
+              className="hidden sm:flex w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white items-center justify-center backdrop-blur-md border border-white/20 shadow-2xl transition-all hover:scale-110 flex-shrink-0 cursor-pointer"
+              aria-label={t.reviews.prevVideo}
+              title="Previous (Left Arrow key)"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+
+            {/* Main Smartphone Card (Height constrained to viewport) */}
+            <div className="relative flex flex-col bg-slate-950 rounded-[2rem] p-2 sm:p-2.5 shadow-2xl border border-white/20 h-full aspect-[9/16] w-auto max-w-[94vw] overflow-hidden">
+              {/* Top Bar Floating Controls */}
+              <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
+                <div className="flex items-center gap-1.5 pointer-events-auto">
+                  <span className="px-2.5 py-0.5 bg-red-600 text-white rounded-full text-[10px] font-bold shadow-md">
+                    {selectedReviewIndex + 1} / {REVIEW_SHORTS.length}
+                  </span>
+                  <span className="px-2.5 py-0.5 bg-black/70 backdrop-blur-md rounded-full text-[11px] font-semibold text-teal-300 border border-white/15 shadow-md truncate max-w-[140px] sm:max-w-[180px]">
+                    {language === 'en'
+                      ? REVIEW_SHORTS[selectedReviewIndex].tagEn
+                      : REVIEW_SHORTS[selectedReviewIndex].tagBn}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 pointer-events-auto">
+                  <a
+                    href={`https://youtube.com/shorts/${REVIEW_SHORTS[selectedReviewIndex].id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2.5 py-1 bg-black/70 hover:bg-black/90 backdrop-blur-md rounded-full text-[11px] font-bold text-white flex items-center gap-1 border border-white/15 shadow-md transition-colors"
+                    title={t.reviews.viewOnYoutube}
+                  >
+                    <span>YouTube</span>
+                    <ArrowRight className="h-3 w-3 -rotate-45" />
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedReviewIndex(null)}
+                    className="w-8 h-8 rounded-full bg-black/70 hover:bg-red-600 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-colors shadow-md cursor-pointer"
+                    aria-label={t.reviews.closeModal}
+                    title="Close (Esc)"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* 9:16 Video Player Frame taking full rounded area */}
+              <div className="relative w-full h-full rounded-[1.6rem] overflow-hidden bg-black shadow-inner">
+                <iframe
+                  src={getYouTubeEmbedUrl(REVIEW_SHORTS[selectedReviewIndex].id, true)}
+                  className="w-full h-full border-0 absolute inset-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  title={REVIEW_SHORTS[selectedReviewIndex].titleEn}
+                />
+              </div>
+
+              {/* Bottom Mobile Navigation Overlay */}
+              <div className="sm:hidden absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-auto">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedReviewIndex((prev) =>
+                      prev !== null ? (prev - 1 + REVIEW_SHORTS.length) % REVIEW_SHORTS.length : 0
+                    )
+                  }
+                  className="px-3 py-1.5 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-bold border border-white/20 flex items-center gap-1 shadow-lg"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span>{t.reviews.prevVideo}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedReviewIndex((prev) =>
+                      prev !== null ? (prev + 1) % REVIEW_SHORTS.length : 0
+                    )
+                  }
+                  className="px-3 py-1.5 bg-black/80 backdrop-blur-md text-white rounded-full text-xs font-bold border border-white/20 flex items-center gap-1 shadow-lg"
+                >
+                  <span>{t.reviews.nextVideo}</span>
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Side Next Arrow (Desktop/Tablet) */}
+            <button
+              type="button"
+              onClick={() =>
+                setSelectedReviewIndex((prev) =>
+                  prev !== null ? (prev + 1) % REVIEW_SHORTS.length : 0
+                )
+              }
+              className="hidden sm:flex w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white items-center justify-center backdrop-blur-md border border-white/20 shadow-2xl transition-all hover:scale-110 flex-shrink-0 cursor-pointer"
+              aria-label={t.reviews.nextVideo}
+              title="Next (Right Arrow key)"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════
+          QUICK ACCESS CARDS
+      ═══════════════════════════════════════ */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.quickAccess.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.quickAccess.subheading}</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                to: '#appointment-section',
+                icon: Calendar,
+                title: t.quickAccess.serialTitle,
+                desc: t.quickAccess.serialDesc,
+                cta: t.quickAccess.serialCta,
+                gradient: 'from-teal-500 to-cyan-600',
+                glow: 'hover:shadow-teal-200',
+                isAnchor: true,
+              },
+              {
+                to: '/online-consultation',
+                icon: Video,
+                title: t.quickAccess.onlineTitle,
+                desc: t.quickAccess.onlineDesc,
+                cta: t.quickAccess.onlineCta,
+                gradient: 'from-blue-500 to-indigo-600',
+                glow: 'hover:shadow-blue-200',
+                isAnchor: false,
+              },
+              {
+                to: '/faq',
+                icon: HelpCircle,
+                title: t.quickAccess.faqTitle,
+                desc: t.quickAccess.faqDesc,
+                cta: t.quickAccess.faqCta,
+                gradient: 'from-purple-500 to-pink-600',
+                glow: 'hover:shadow-purple-200',
+                isAnchor: false,
+              },
+            ].map((card, i) => (
+              <ScrollReveal key={i} delay={i * 120}>
+                {card.isAnchor ? (
+                  <a href={card.to} className="block h-full">
+                    <QuickAccessCard {...card} />
+                  </a>
+                ) : (
+                  <Link to={card.to} className="block h-full">
+                    <QuickAccessCard {...card} />
+                  </Link>
+                )}
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          SOCIAL CARE & SPECIAL OFFERS
+      ═══════════════════════════════════════ */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-teal-50/20">
+        <div className="container mx-auto px-4">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <div className="badge-pill mb-4 mx-auto w-fit">
+                <Heart className="h-3.5 w-3.5 text-primary" />
+                {language === 'en' ? 'Special Care' : 'বিশেষ সেবা'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.socialCare.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.socialCare.subheading}</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                icon: HeartHandshake,
+                title: t.socialCare.disabledTitle,
+                offer: t.socialCare.disabledOffer,
+                desc: t.socialCare.disabledDesc,
+                iconBg: 'bg-emerald-100',
+                iconColor: 'text-emerald-600',
+                offerColor: 'text-emerald-600',
+                gradient: 'from-emerald-50 to-green-50',
+                border: 'border-emerald-200',
+              },
+              {
+                icon: GraduationCap,
+                title: t.socialCare.madrasha,
+                offer: t.socialCare.madrashaOffer,
+                desc: t.socialCare.madrashaDesc,
+                iconBg: 'bg-blue-100',
+                iconColor: 'text-blue-600',
+                offerColor: 'text-blue-600',
+                gradient: 'from-blue-50 to-cyan-50',
+                border: 'border-blue-200',
+              },
+              {
+                icon: Baby,
+                title: t.socialCare.ultrasound,
+                offer: t.socialCare.ultrasoundOffer,
+                desc: t.socialCare.ultrasoundDesc,
+                iconBg: 'bg-purple-100',
+                iconColor: 'text-purple-600',
+                offerColor: 'text-purple-600',
+                gradient: 'from-purple-50 to-pink-50',
+                border: 'border-purple-200',
+              },
+            ].map((card, i) => (
+              <ScrollReveal key={i} delay={i * 100}>
+                <div className={`premium-card bg-gradient-to-br ${card.gradient} rounded-2xl p-8 border ${card.border} text-center h-full`}>
+                  <div className={`w-16 h-16 ${card.iconBg} rounded-2xl flex items-center justify-center mx-auto mb-5`}>
+                    <card.icon className={`h-8 w-8 ${card.iconColor}`} />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{card.title}</h3>
+                  <p className={`text-2xl font-bold ${card.offerColor} mb-2`}>{card.offer}</p>
+                  <p className="text-sm text-muted-foreground">{card.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          WHY CHOOSE SECTION
+      ═══════════════════════════════════════ */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <ScrollReveal>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.whyChoose.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.whyChoose.subheading}</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {t.whyChoose.reasons.map((reason, i) => (
+              <ScrollReveal key={i} delay={i * 80}>
+                <div className="flex items-start gap-4 p-5 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-white">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <BadgeCheck className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">{reason.title}</h3>
+                    <p className="text-sm text-muted-foreground">{reason.desc}</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          APPOINTMENT SECTION
+      ═══════════════════════════════════════ */}
+      <section id="appointment-section" className="py-20 bg-gradient-to-br from-teal-50 to-cyan-50/50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.appointment.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.appointment.subheading}</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Form */}
+            <ScrollReveal direction="left">
+              <div className="bg-white rounded-3xl p-8 shadow-xl border border-teal-100">
+                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2 font-outfit">
+                  <Calendar className="h-6 w-6 text-primary" />
+                  {t.appointment.formTitle}
+                </h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="name" className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                      <User className="h-4 w-4 text-primary" /> {t.appointment.name} *
+                    </Label>
+                    <Input
+                      id="name" name="name" value={formData.name} onChange={handleChange} required
+                      placeholder={t.appointment.namePlaceholder}
+                      className="premium-input"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone" className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                      <Phone className="h-4 w-4 text-primary" /> {t.appointment.phone} *
+                    </Label>
+                    <Input
+                      id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} required
+                      placeholder={t.appointment.phonePlaceholder}
+                      className="premium-input"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="age" className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                        <User className="h-4 w-4 text-primary" /> {t.appointment.age} *
+                      </Label>
+                      <Input
+                        id="age" name="age" type="number" value={formData.age} onChange={handleChange} required
+                        placeholder={t.appointment.agePlaceholder}
+                        className="premium-input"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="date" className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                        <Calendar className="h-4 w-4 text-primary" /> {t.appointment.date} *
+                      </Label>
+                      <Input
+                        id="date" name="date" type="date" value={formData.date} onChange={handleChange} required
+                        min={new Date().toISOString().split('T')[0]}
+                        className="premium-input"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="problem" className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                      <FileText className="h-4 w-4 text-primary" /> {t.appointment.problem} *
+                    </Label>
+                    <Textarea
+                      id="problem" name="problem" value={formData.problem} onChange={handleChange} required
+                      placeholder={t.appointment.problemPlaceholder} rows={3}
+                      className="premium-input resize-none"
+                    />
+                  </div>
+                  <Button type="submit" className="w-full gap-2 btn-premium text-white border-0 py-6 text-base font-bold">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    {t.appointment.submitBtn}
+                  </Button>
+                </form>
+              </div>
+            </ScrollReveal>
+
+            {/* How to + Direct Call */}
+            <ScrollReveal direction="right">
+              <div className="space-y-5">
+                {/* How to guide */}
+                <div className="bg-white rounded-3xl p-6 border border-teal-100 shadow-md">
+                  <h3 className="font-bold text-gray-900 mb-5 flex items-center gap-2 font-outfit">
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Calendar className="h-4 w-4 text-primary" />
+                    </div>
+                    {t.appointment.howToTitle}
+                  </h3>
+                  <div className="space-y-4">
+                    {[t.appointment.step1, t.appointment.step2, t.appointment.step3].map((step, i) => (
+                      <div key={i} className="flex items-center gap-4">
+                        <div className="w-9 h-9 bg-gradient-to-br from-primary to-accent text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md">
+                          {i + 1}
+                        </div>
+                        <p className="text-sm text-gray-700 font-medium">{step}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Direct call */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 border border-amber-100">
+                  <h3 className="font-bold text-amber-900 mb-3 font-outfit">{t.appointment.callTitle}</h3>
+                  <a href="tel:01725497355">
+                    <button className="w-full flex items-center justify-center gap-3 py-4 bg-white border-2 border-amber-200 rounded-2xl hover:bg-amber-50 transition-colors text-amber-900 font-bold text-lg shadow-sm">
+                      <Phone className="h-5 w-5" />
+                      {t.appointment.callNumber}
+                    </button>
+                  </a>
+                </div>
+
+                {/* WhatsApp CTA */}
                 <a
                   href="https://wa.me/8801725497355"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3 w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-green-500/30 transition-all hover:-translate-y-1"
                 >
-                  <Button size="lg" variant="outline" className="gap-2 text-base border-2 hover:bg-green-50">
-                    <MessageCircle className="h-5 w-5 text-green-600" />
-                    WhatsApp এ যোগাযোগ করুন
-                  </Button>
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                  </svg>
+                  WhatsApp
                 </a>
               </div>
-            </div>
-
-            {/* Right - Doctor Image */}
-            <div className="order-2 flex justify-center">
-              <div className="relative">
-                {/* Decorative ring */}
-                <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl blur-2xl"></div>
-
-                {/* Image container */}
-                <div className="relative bg-white p-2 rounded-3xl shadow-2xl">
-                  <img
-                    src={doctorImage}
-                    alt="ডা. মোঃ খাইরুল ইসলাম"
-                    className="w-full h-auto rounded-2xl"
-                  />
-
-                  {/* Doctor info overlay */}
-                  <div className="relative mt-4 md:absolute md:bottom-6 md:left-6 md:right-6 md:mt-0 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-teal-100">
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                      ডা. মোঃ খাইরুল ইসলাম
-                    </h3>
-                    <div className="space-y-1 text-sm">
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <GraduationCap className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span>এম.বি.বি.এস (শের-ই-বাংলা মেডিকেল কলেজ)</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-700">
-                        <Stethoscope className="h-4 w-4 text-accent flex-shrink-0" />
-                        <span>ডিএ (BSMMU) | FIPM (India)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* Quick Info Cards */}
-      <section className="py-12 -mt-8 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <MapPin className="h-8 w-8 text-primary mb-3" />
-                <h3 className="font-bold mb-2">চেম্বার</h3>
-                <p className="text-sm text-muted-foreground">নিউ হলি কেয়ার প্যাথলজী</p>
-              </CardContent>
-            </Card>
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <MapPin className="h-8 w-8 text-primary mb-3" />
-                <h3 className="font-bold mb-2">ঠিকানা</h3>
-                <p className="text-sm text-muted-foreground">পুরাতন লোহাপট্টি, পূবালী ব্যাংকের নীচতলা, বরগুনা</p>
-              </CardContent>
-            </Card>
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <Clock className="h-8 w-8 text-primary mb-3" />
-                <h3 className="font-bold mb-2">কনসালটেশন ফি</h3>
-                <p className="text-sm text-muted-foreground">৫০০ টাকা</p>
-              </CardContent>
-            </Card>
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <Clock className="h-8 w-8 text-primary mb-3" />
-                <h3 className="font-bold mb-2">Follow-up ফি</h3>
-                <p className="text-sm text-muted-foreground">৩০০ টাকা</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      {/* ═══════════════════════════════════════
+          DOCTOR'S HEALTH ADVICE & TIPS
+      ═══════════════════════════════════════ */}
+      <HealthTips />
 
-
-
-      {/* Services Snapshot */}
-      <section className="py-16 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">সেবাসমূহ</h2>
-            <p className="text-muted-foreground">আধুনিক চিকিৎসা সেবায় আমরা প্রতিশ্রুতিবদ্ধ</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Stethoscope className="h-10 w-10 text-primary mb-4" />
-                <h3 className="font-bold mb-2">মেডিসিন সেবা</h3>
-                <p className="text-sm text-muted-foreground">জ্বর, ডায়াবেটিস, প্রেসার, শ্বাসকষ্ট ইত্যাদি</p>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Heart className="h-10 w-10 text-primary mb-4" />
-                <h3 className="font-bold mb-2">ব্যথার চিকিৎসা</h3>
-                <p className="text-sm text-muted-foreground">সকল প্রকার তীব্র ও দীর্ঘমেয়াদী ব্যথার চিকিৎসা</p>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <BadgeCheck className="h-10 w-10 text-primary mb-4" />
-                <h3 className="font-bold mb-2">পেইন ম্যানেজমেন্ট</h3>
-                <p className="text-sm text-muted-foreground">ইন্টারভেনশনাল পেইন ম্যানেজমেন্ট</p>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <Users className="h-10 w-10 text-primary mb-4" />
-                <h3 className="font-bold mb-2">আল্ট্রাসনোগ্রাফি</h3>
-                <p className="text-sm text-muted-foreground">গর্ভবতী মায়েদের আল্ট্রাসনোগ্রাফি (৫০০ টাকা)</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="text-center mt-8">
-            <Link to="/services">
-              <Button variant="outline" size="lg">সকল সেবা দেখুন</Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-
-
-      {/* Quick Access Sections */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">দ্রুত সেবা নিন</h2>
-            <p className="text-muted-foreground">আপনার সুবিধামত যেকোনো সেবা নির্বাচন করুন</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Appointment/Serial */}
-            <a href="#appointment-section">
-              <Card className="hover:shadow-2xl transition-all hover:scale-105 cursor-pointer bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200 h-full">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Calendar className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 text-gray-900">সিরিয়াল</h3>
-                  <p className="text-muted-foreground mb-4">
-                    অনলাইনে সিরিয়াল বুক করুন এবং নির্ধারিত সময়ে চেম্বারে আসুন
-                  </p>
-                  <div className="flex items-center justify-center gap-2 text-primary font-semibold">
-                    <span>সিরিয়াল নিন</span>
-                    <span>→</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </a>
-
-            {/* Online Consultation */}
-            <Link to="/online-consultation">
-              <Card className="hover:shadow-2xl transition-all hover:scale-105 cursor-pointer bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 h-full">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Video className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 text-gray-900">অনলাইন পরামর্শ</h3>
-                  <p className="text-muted-foreground mb-4">
-                    ঘরে বসে অনলাইন বা অফলাইনে পরামর্শ নিন
-                  </p>
-                  <div className="flex items-center justify-center gap-2 text-blue-600 font-semibold">
-                    <span>পরামর্শ নিন</span>
-                    <span>→</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {/* FAQ */}
-            <Link to="/faq">
-              <Card className="hover:shadow-2xl transition-all hover:scale-105 cursor-pointer bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 h-full">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <HelpCircle className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 text-gray-900">প্রশ্নোত্তর</h3>
-                  <p className="text-muted-foreground mb-4">
-                    সচরাচর জিজ্ঞাসিত প্রশ্নের উত্তর জানুন
-                  </p>
-                  <div className="flex items-center justify-center gap-2 text-purple-600 font-semibold">
-                    <span>FAQ দেখুন</span>
-                    <span>→</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Care & Offers */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">সামাজিক সেবা ও অফার</h2>
-            <p className="text-muted-foreground">সমাজের সকল শ্রেণীর মানুষের জন্য বিশেষ সুবিধা</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-xl transition-all">
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <HeartHandshake className="h-8 w-8 text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">প্রতিবন্ধীদের জন্য</h3>
-                <p className="text-2xl font-bold text-green-600 mb-2">ফ্রী চিকিৎসা</p>
-                <p className="text-sm text-muted-foreground">সম্পূর্ণ বিনামূল্যে পরামর্শ ও চিকিৎসা সেবা</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200 hover:shadow-xl transition-all">
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <GraduationCap className="h-8 w-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">মাদ্রাসা শিক্ষার্থী</h3>
-                <p className="text-2xl font-bold text-blue-600 mb-2">৫০% ডিসকাউন্ট</p>
-                <p className="text-sm text-muted-foreground">মাদ্রাসা শিক্ষার্থীদের বিশেষ ছাড়</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 hover:shadow-xl transition-all">
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Baby className="h-8 w-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">আল্ট্রাসনোগ্রাফি</h3>
-                <p className="text-2xl font-bold text-purple-600 mb-2">মাত্র ৫০০ টাকা</p>
-                <p className="text-sm text-muted-foreground">গর্ভবতী মায়েদের বিশেষ মূল্যে</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-accent/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">কেন আমাকে বেছে নেবেন?</h2>
-            <p className="text-muted-foreground">আপনার স্বাস্থ্যসেবার জন্য সেরা পছন্দ</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <BadgeCheck className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">আধুনিক পেইন মেডিসিন ট্রেনিং</h3>
-                <p className="text-sm text-muted-foreground">দেশ-বিদেশ থেকে প্রশিক্ষণপ্রাপ্ত</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <BadgeCheck className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">আন্তর্জাতিক ফেলোশিপ</h3>
-                <p className="text-sm text-muted-foreground">FIPM (India) সার্টিফাইড</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <Heart className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">রোগীবান্ধব আচরণ</h3>
-                <p className="text-sm text-muted-foreground">সকলের সাথে সদ্ব্যবহার</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <Stethoscope className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">পরিষ্কার ও নির্ভরযোগ্য চিকিৎসা</h3>
-                <p className="text-sm text-muted-foreground">স্বচ্ছ ও কার্যকর পদ্ধতি</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <Heart className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">দীর্ঘমেয়াদী ব্যথা নিয়ন্ত্রণ</h3>
-                <p className="text-sm text-muted-foreground">বিশেষজ্ঞ পরামর্শ ও চিকিৎসা</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="bg-primary text-white p-2 rounded-lg flex-shrink-0">
-                <Users className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">সমাজসেবামূলক</h3>
-                <p className="text-sm text-muted-foreground">বিশেষ মূল্যে সেবা প্রদান</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Appointment Section */}
-      <section id="appointment-section" className="py-16 bg-white">
+      {/* ═══════════════════════════════════════
+          FAQ SECTION
+      ═══════════════════════════════════════ */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">সিরিয়াল নিন</h2>
-            <p className="text-muted-foreground">অনলাইনে সিরিয়াল বুক করুন এবং WhatsApp এ নিশ্চিতকরণ পান</p>
-          </div>
-          <div className="grid lg:grid-cols-2 gap-8">
-            <Card className="shadow-lg border-teal-100">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-6 w-6 text-primary" />
-                  সিরিয়াল ফর্ম
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="name" className="flex items-center gap-2 mb-1">
-                      <User className="h-4 w-4" /> নাম *
-                    </Label>
-                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="আপনার পূর্ণ নাম" />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone" className="flex items-center gap-2 mb-1">
-                      <Phone className="h-4 w-4" /> মোবাইল *
-                    </Label>
-                    <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} required placeholder="০১XXXXXXXXX" />
-                  </div>
-                  <div>
-                    <Label htmlFor="age" className="flex items-center gap-2 mb-1">
-                      <User className="h-4 w-4" /> বয়স *
-                    </Label>
-                    <Input id="age" name="age" type="number" value={formData.age} onChange={handleChange} required placeholder="বয়স" />
-                  </div>
-                  <div>
-                    <Label htmlFor="problem" className="flex items-center gap-2 mb-1">
-                      <FileText className="h-4 w-4" /> সমস্যা *
-                    </Label>
-                    <Textarea id="problem" name="problem" value={formData.problem} onChange={handleChange} required placeholder="সমস্যার বিবরণ" rows={3} />
-                  </div>
-                  <div>
-                    <Label htmlFor="date" className="flex items-center gap-2 mb-1">
-                      <Calendar className="h-4 w-4" /> তারিখ *
-                    </Label>
-                    <Input id="date" name="date" type="date" value={formData.date} onChange={handleChange} required min={new Date().toISOString().split('T')[0]} />
-                  </div>
-                  <Button type="submit" className="w-full gap-2 bg-primary hover:bg-primary/90">
-                    <Send className="h-5 w-5" />
-                    WhatsApp এ সিরিয়াল নিশ্চিত করুন
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-            <div className="space-y-6">
-              <Card className="bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200">
-                <CardContent className="p-6">
-                  <h3 className="font-bold mb-4 flex items-center gap-2 text-teal-900">
-                    <Calendar className="h-5 w-5" />
-                    কিভাবে সিরিয়াল নেবেন?
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex gap-3">
-                      <div className="bg-white text-primary w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm flex-shrink-0">1</div>
-                      <p className="text-sm text-teal-800 pt-1">ফর্মটি সঠিকভাবে পূরণ করুন</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <div className="bg-white text-primary w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm flex-shrink-0">2</div>
-                      <p className="text-sm text-teal-800 pt-1">সাবমিট বাটনে ক্লিক করুন</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <div className="bg-white text-primary w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm flex-shrink-0">3</div>
-                      <p className="text-sm text-teal-800 pt-1">WhatsApp এ মেসেজ পাঠান</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="bg-amber-50 border-amber-200">
-                <CardContent className="p-6">
-                  <h3 className="font-bold mb-2 text-amber-900">সরাসরি কল করুন</h3>
-                  <a href="tel:01725497355">
-                    <Button variant="outline" className="w-full gap-2 border-amber-200 text-amber-900 hover:bg-amber-100">
-                      <Phone className="h-4 w-4" /> ০১৭২৫-৪৯৭৩৫৫
-                    </Button>
-                  </a>
-                </CardContent>
-              </Card>
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.faq.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.faq.subheading}</p>
             </div>
-          </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100">
+              <Accordion type="single" collapsible className="w-full space-y-2">
+                {t.faq.items.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index}`} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                    <AccordionTrigger className="text-left font-semibold text-gray-800 px-5 py-4 hover:text-primary hover:no-underline">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-600 px-5 pb-4 leading-relaxed">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="text-center mt-8">
+              <Link to="/faq">
+                <Button variant="outline" size="lg" className="gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all">
+                  {t.faq.viewMore}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">সচরাচর জিজ্ঞাসিত প্রশ্ন (FAQ)</h2>
-            <p className="text-muted-foreground">আপনার সাধারণ প্রশ্নের উত্তরগুলো এখানে জানুন</p>
-          </div>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left font-bold text-gray-800">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-          <div className="text-center mt-8">
-            <Link to="/faq">
-              <Button variant="outline" size="lg">আরও জানুন</Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-primary to-accent text-white">
+      {/* ═══════════════════════════════════════
+          CTA BANNER
+      ═══════════════════════════════════════ */}
+      <section className="py-20 gradient-animated text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">আজই সিরিয়াল নিন</h2>
-          <p className="text-lg mb-8 opacity-90">বিশ্বস্ত চিকিৎসার জন্য আজই যোগাযোগ করুন</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a href="tel:01725497355">
-              <Button size="lg" variant="secondary" className="gap-2">
-                <Phone className="h-5 w-5" />
-                কল করুন: ০১৭২৫-৪৯৭৩৫৫
-              </Button>
-            </a>
-            <Link to="/online-consultation">
-              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
-                অনলাইন পরামর্শ নিন
-              </Button>
-            </Link>
-          </div>
+          <ScrollReveal>
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 font-outfit">{t.cta.heading}</h2>
+              <p className="text-lg mb-10 opacity-90">{t.cta.subheading}</p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <a href="tel:01725497355">
+                  <Button size="lg" className="gap-2 bg-white text-primary hover:bg-gray-50 font-bold px-8 py-6 text-base shadow-xl">
+                    <Phone className="h-5 w-5" />
+                    {t.cta.callBtn}
+                  </Button>
+                </a>
+                <Link to="/online-consultation">
+                  <Button size="lg" variant="outline" className="bg-white/15 hover:bg-white/25 text-white border-2 border-white/50 px-8 py-6 text-base font-bold">
+                    {t.cta.onlineBtn}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Chamber Info Section */}
-      <section className="py-16 bg-slate-50">
+      {/* ═══════════════════════════════════════
+          CHAMBER INFO
+      ═══════════════════════════════════════ */}
+      <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">চেম্বার তথ্য</h2>
-            <p className="text-muted-foreground">চেম্বারের বিস্তারিত তথ্য এবং সময়সূচী</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Chamber Details Card */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-6 w-6 text-primary" />
-                  চেম্বারের ঠিকানা
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-bold mb-2">নিউ হলি কেয়ার প্যাথলজী</h4>
-                  <p className="text-muted-foreground">পুরাতন লোহাপট্টি, পূবালী ব্যাংকের নীচতলা, বরগুনা</p>
-                </div>
-                <div className="pt-4 border-t">
-                  <h4 className="font-bold mb-3 flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
-                    চেম্বারের সময়সূচী
-                  </h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">শনিবার - বৃহস্পতিবার:</span>
-                      <span className="font-semibold">সকাল ৯:০০ - রাত ৯:০০</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">শুক্রবার:</span>
-                      <span className="font-semibold">বিকাল ৪:০০ - রাত ৯:০০</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 section-heading font-outfit">
+                {t.chamber.heading}
+              </h2>
+              <p className="text-muted-foreground">{t.chamber.subheading}</p>
+            </div>
+          </ScrollReveal>
 
-            {/* Fees and Contact Card */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Phone className="h-6 w-6 text-primary" />
-                  ফি এবং যোগাযোগ
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-teal-50 p-4 rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-1">কনসালটেশন ফি</p>
-                    <p className="text-2xl font-bold text-primary">৫০০ টাকা</p>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <ScrollReveal direction="left">
+              <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 h-full">
+                <h3 className="font-bold text-gray-900 text-xl mb-5 flex items-center gap-3 font-outfit">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <MapPin className="h-5 w-5 text-primary" />
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-1">Follow-up ফি</p>
-                    <p className="text-2xl font-bold text-blue-600">৩০০ টাকা</p>
+                  {t.chamber.addressTitle}
+                </h3>
+                <div className="mb-6">
+                  <h4 className="font-bold text-gray-900 mb-1">{t.chamber.chamberName}</h4>
+                  <p className="text-muted-foreground text-sm">{t.chamber.addressText}</p>
+                </div>
+                <div className="border-t pt-5">
+                  <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-primary" />
+                    {t.chamber.scheduleTitle}
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 px-3 bg-teal-50 rounded-xl">
+                      <span className="text-sm text-gray-600">{t.chamber.satToThu}</span>
+                      <span className="text-sm font-bold text-primary">{t.chamber.satToThuTime}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 px-3 bg-amber-50 rounded-xl">
+                      <span className="text-sm text-gray-600">{t.chamber.friday}</span>
+                      <span className="text-sm font-bold text-amber-700">{t.chamber.fridayTime}</span>
+                    </div>
                   </div>
                 </div>
-                <div className="pt-4 border-t space-y-3">
-                  <h4 className="font-bold mb-3">যোগাযোগ করুন</h4>
-                  <a href="tel:01725497355" className="flex items-center gap-3 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                    <Phone className="h-5 w-5 text-green-600" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">ফোন নাম্বার</p>
-                      <p className="font-semibold text-green-900">০১৭২৫-৪৯৭৩৫৫</p>
-                    </div>
-                  </a>
-                  <a href="https://wa.me/8801725497355" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors">
-                    <MessageCircle className="h-5 w-5 text-teal-600" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">WhatsApp</p>
-                      <p className="font-semibold text-teal-900">মেসেজ পাঠান</p>
-                    </div>
-                  </a>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="right">
+              <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 h-full">
+                <h3 className="font-bold text-gray-900 text-xl mb-5 flex items-center gap-3 font-outfit">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Phone className="h-5 w-5 text-primary" />
+                  </div>
+                  {t.chamber.feesTitle}
+                </h3>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-teal-50 rounded-2xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground mb-1">{t.chamber.consultFee}</p>
+                    <p className="text-2xl font-bold text-primary font-outfit">{t.chamber.consultFeeAmt}</p>
+                  </div>
+                  <div className="bg-blue-50 rounded-2xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground mb-1">{t.chamber.followupFee}</p>
+                    <p className="text-2xl font-bold text-blue-600 font-outfit">{t.chamber.followupFeeAmt}</p>
+                  </div>
                 </div>
-                <div className="pt-4 border-t">
+                <div className="border-t pt-5 space-y-3">
+                  <h4 className="font-bold text-gray-900 mb-3">{t.chamber.contact}</h4>
+                  <a href="tel:01725497355" className="flex items-center gap-3 p-3 bg-green-50 rounded-xl hover:bg-green-100 transition-colors group">
+                    <div className="w-9 h-9 bg-green-100 group-hover:bg-green-200 rounded-lg flex items-center justify-center transition-colors">
+                      <Phone className="h-4 w-4 text-green-700" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">{t.chamber.phoneLabel}</p>
+                      <p className="font-bold text-green-900 text-sm">০১৭২৫-৪৯৭৩৫৫</p>
+                    </div>
+                  </a>
+                  <a href="https://wa.me/8801725497355" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-teal-50 rounded-xl hover:bg-teal-100 transition-colors group">
+                    <div className="w-9 h-9 bg-teal-100 group-hover:bg-teal-200 rounded-lg flex items-center justify-center transition-colors">
+                      <MessageCircle className="h-4 w-4 text-teal-700" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">{t.chamber.whatsappLabel}</p>
+                      <p className="font-bold text-teal-900 text-sm">{t.chamber.whatsappText}</p>
+                    </div>
+                  </a>
                   <a href="#appointment-section">
-                    <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
-                      <Calendar className="h-5 w-5" />
-                      সিরিয়াল নিন
-                    </Button>
+                    <button className="w-full mt-2 py-3 btn-premium text-white rounded-xl font-bold flex items-center justify-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      {t.nav.bookAppointment}
+                    </button>
                   </a>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─── Quick Access Card Sub-component ────────────────────
+function QuickAccessCard({ icon: Icon, title, desc, cta, gradient, glow }: {
+  icon: React.ElementType;
+  title: string;
+  desc: string;
+  cta: string;
+  gradient: string;
+  glow: string;
+  to?: string;
+  isAnchor?: boolean;
+}) {
+  return (
+    <div className={`h-full rounded-3xl p-8 text-white shadow-xl hover:shadow-2xl ${glow} transition-all duration-300 hover:-translate-y-2 cursor-pointer bg-gradient-to-br ${gradient}`}>
+      <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-5 backdrop-blur-sm">
+        <Icon className="h-8 w-8 text-white" />
+      </div>
+      <h3 className="text-2xl font-bold mb-3 text-center font-outfit">{title}</h3>
+      <p className="text-white/80 text-center mb-5 text-sm leading-relaxed">{desc}</p>
+      <div className="flex items-center justify-center gap-2 font-bold">
+        <span>{cta}</span>
+        <ArrowRight className="h-4 w-4" />
+      </div>
     </div>
   );
 }
