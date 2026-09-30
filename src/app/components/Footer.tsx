@@ -135,7 +135,7 @@ export function Footer() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-slate-300 group-hover:text-white transition-colors text-sm leading-relaxed">{t.footer.address}</span>
-                    <span className="text-teal-400 text-xs font-mono font-bold mt-0.5">Plus Code: 545C+V2 Barguna</span>
+                    <span className="text-teal-400 text-xs font-mono font-bold mt-0.5">Plus Code: 5459+J4 Barguna</span>
                   </div>
                 </a>
               </div>

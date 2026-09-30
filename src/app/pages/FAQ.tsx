@@ -8,7 +8,7 @@ const extendedFaqsBn = [
   { q: 'জরুরি রোগী হলে কি করবেন?', a: 'জরুরি অবস্থায় দেরি না করে নিকটস্থ হাসপাতালের জরুরি বিভাগে যান। তারপর সুস্থ হলে আমাদের সাথে ফোনে যোগাযোগ করে Follow-up পরামর্শ নিন।' },
   { q: 'অনলাইন কনসাল্টেশন আছে কি?', a: 'হ্যাঁ, আমরা অনলাইন পরামর্শ সেবা প্রদান করি। ফোন বা WhatsApp এর মাধ্যমে পরামর্শ নিতে পারবেন।' },
   { q: 'পেমেন্ট কিভাবে করবো?', a: 'চেম্বারে নগদ (Cash) পেমেন্ট করতে পারবেন। এছাড়াও bKash, Nagad, Rocket এর মাধ্যমেও পেমেন্ট করতে পারবেন।' },
-  { q: 'চেম্বারের সঠিক ঠিকানা কি?', a: 'নিউ হলি কেয়ার প্যাথলজী, পুরাতন লোহাপট্টি, পূবালী ব্যাংকের নীচতলা, বরগুনা।' },
+  { q: 'চেম্বারের সঠিক ঠিকানা কি?', a: 'বেপারি ভবন, আল আশরাফ ডায়াগনস্টিক সেন্টার, বরগুনা।' },
   { q: 'রিপোর্ট কি সাথে আনতে হবে?', a: 'হ্যাঁ, আগের কোনো পরীক্ষার রিপোর্ট, প্রেসক্রিপশন বা মেডিকেল ডকুমেন্ট থাকলে অবশ্যই সাথে আনবেন।' },
 ];
 
@@ -17,7 +17,7 @@ const extendedFaqsEn = [
   { q: 'What to do in an emergency?', a: 'In an emergency, do not delay — go directly to the nearest hospital emergency department. Contact us for follow-up once stable.' },
   { q: 'Is online consultation available?', a: 'Yes, we provide online consultation services via phone or WhatsApp.' },
   { q: 'How do I make a payment?', a: 'Cash payments are accepted at the chamber. bKash, Nagad, and Rocket are also accepted.' },
-  { q: 'What is the exact chamber address?', a: 'New Holy Care Pathology, Old Lohapatti, Ground Floor of Pubali Bank, Barguna.' },
+  { q: 'What is the exact chamber address?', a: 'Bepari Bhaban, Al Ashraf Diagnostic Center, Barguna.' },
   { q: 'Should I bring previous reports?', a: 'Yes, please bring any previous test reports, prescriptions, or medical documents as they help in diagnosis.' },
 ];
 

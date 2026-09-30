@@ -37,7 +37,7 @@ export function SEO({ title, description, keywords, canonical }: SEOProps) {
             <meta property="og:type" content="website" />
             <meta property="og:url" content={canonicalUrl} />
             <meta property="og:title" content={fullTitle} />
-            <meta property="og:description" content="Consultation 500৳, follow-up 300৳. Call/WhatsApp for appointment. Chamber: New Holy Care Pathology, Barguna (5459+VXX)." />
+            <meta property="og:description" content="Consultation 500৳, follow-up 300৳. Call/WhatsApp for appointment. Chamber: Al Ashraf Diagnostic Center, Bepari Bhaban, Barguna (5459+J4)." />
             <meta property="og:site_name" content="Dr. Khairul Islam" />
             <meta property="og:locale" content="bn_BD" />
 

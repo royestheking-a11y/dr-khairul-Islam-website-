@@ -69,6 +69,18 @@ export default function Home() {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [heroMediaMode, setHeroMediaMode] = useState<'video' | 'photo'>('video');
   const [formData, setFormData] = useState({ name: '', phone: '', age: '', problem: '', date: '' });
+  const [showAddressPopup, setShowAddressPopup] = useState(false);
+
+  useEffect(() => {
+    const hasSeenPopup = sessionStorage.getItem('hasSeenAddressPopup');
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setShowAddressPopup(true);
+        sessionStorage.setItem('hasSeenAddressPopup', 'true');
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Keyboard navigation for video shorts modal
   useEffect(() => {
@@ -249,6 +261,12 @@ export default function Home() {
                 <br className="hidden sm:block" />
                 {language === 'en' ? 'Interventional Pain Management Specialist' : 'ইন্টারভেনশনাল পেইন ম্যানেজমেন্ট বিশেষজ্ঞ'}
               </h1>
+              
+              <div className="mb-6 animate-fade-up delay-150">
+                <span className="inline-block bg-teal-100 text-teal-900 px-4 py-2 rounded-xl text-lg sm:text-xl md:text-2xl font-extrabold border-2 border-teal-500 shadow-sm">
+                  {language === 'en' ? 'BMDC Registration Number: A-69313' : 'বিএমডিসি রেজিস্ট্রেশন নম্বর: A-69313'}
+                </span>
+              </div>
 
               {/* Credentials */}
               <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8 animate-fade-up delay-200">
@@ -348,7 +366,7 @@ export default function Home() {
                       </div>
                       <p className="text-xs text-muted-foreground mb-1 font-medium">{item.label}</p>
                       <p className="text-sm font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">{item.value}</p>
-                      <span className="inline-flex items-center gap-1 text-[11px] text-teal-600 font-semibold mt-2">545C+V2 Barguna ↗</span>
+                      <span className="inline-flex items-center gap-1 text-[11px] text-teal-600 font-semibold mt-2">5459+J4 Barguna ↗</span>
                     </a>
                   ) : (
                     <Link to={item.href} className="block bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group h-full">
@@ -1130,6 +1148,49 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* ═══════════════════════════════════════
+          NEW ADDRESS POPUP
+      ═══════════════════════════════════════ */}
+      {showAddressPopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative border border-teal-100 animate-fade-up">
+            <button
+              onClick={() => setShowAddressPopup(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors text-slate-500 cursor-pointer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-teal-600" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-2 font-outfit">
+              {language === 'en' ? 'New Chamber Address!' : 'চেম্বারের নতুন ঠিকানা!'}
+            </h3>
+            <p className="text-center text-gray-600 mb-6 text-sm">
+              {language === 'en' 
+                ? 'Please note our new address for all future appointments and visits.'
+                : 'দয়া করে লক্ষ্য করুন, এখন থেকে নতুন ঠিকানায় রোগী দেখা হবে।'}
+            </p>
+            <div className="bg-teal-50 rounded-2xl p-4 border border-teal-100 mb-6">
+              <p className="font-bold text-teal-900 text-center text-lg">
+                {language === 'en' ? 'Al Ashraf Diagnostic Center' : 'আল আশরাফ ডায়াগনস্টিক সেন্টার'}
+              </p>
+              <p className="text-teal-700 text-center font-medium mt-1">
+                {language === 'en' ? 'Bepari Bhaban, Barguna' : 'বেপারি ভবন, আল আশরাফ ডায়াগনস্টিক সেন্টার, বরগুনা'}
+              </p>
+            </div>
+            <Button
+              onClick={() => setShowAddressPopup(false)}
+              className="w-full btn-premium text-white py-6 rounded-xl font-bold text-lg cursor-pointer"
+            >
+              {language === 'en' ? 'Got it, Thanks!' : 'ঠিক আছে, বুঝেছি!'}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://drkhairulislam.vercel.app/sitemap.xml

@@ -90,7 +90,7 @@ export function ChamberStatus({ compact = false }: { compact?: boolean }) {
               </div>
 
               <h3 className="text-base md:text-lg font-bold text-gray-900 font-outfit leading-snug">
-                {language === 'bn' ? 'নিউ হলি কেয়ার প্যাথলজী চেম্বার' : 'New Holy Care Pathology Chamber'}
+                {language === 'bn' ? 'আল আশরাফ ডায়াগনস্টিক সেন্টার' : 'Al Ashraf Diagnostic Center'}
               </h3>
 
               <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-600 font-medium">

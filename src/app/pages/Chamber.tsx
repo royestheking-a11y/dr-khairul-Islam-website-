@@ -88,13 +88,13 @@ export default function Chamber() {
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center justify-between">
                     <span>{language === 'en' ? 'Directions & Plus Code' : 'দিকনির্দেশনা ও প্লাস কোড'}</span>
                     <span className="px-2.5 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-mono font-bold">
-                      545C+V2 Barguna
+                      5459+J4 Barguna
                     </span>
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     {language === 'en'
-                      ? 'Located at the ground floor of Pubali Bank Limited, Barguna Branch. Old Lohapatti area, Barguna.'
-                      : 'পূবালী ব্যাংক লিমিটেড, বরগুনা শাখার নিচতলায় অবস্থিত। পুরাতন লোহাপট্টি, বরগুনা।'}
+                      ? 'Located at Bepari Bhaban, Al Ashraf Diagnostic Center, Barguna.'
+                      : 'বেপারি ভবন, আল আশরাফ ডায়াগনস্টিক সেন্টার, বরগুনায় অবস্থিত।'}
                   </p>
                   <a
                     href="https://maps.app.goo.gl/VohUnA2Zuz8gJkiN8"
@@ -146,8 +146,8 @@ export default function Chamber() {
                     <MapPin className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-gray-900 leading-tight font-outfit">New Holy Care Pathology</p>
-                    <p className="text-[11px] text-muted-foreground">545C+V2 Barguna, Bangladesh</p>
+                    <p className="text-xs font-bold text-gray-900 leading-tight font-outfit">Al Ashraf Diagnostic Center</p>
+                    <p className="text-[11px] text-muted-foreground">5459+J4 Barguna, Bangladesh</p>
                   </div>
                 </div>
                 <a
@@ -164,14 +164,14 @@ export default function Chamber() {
               {/* Responsive Google Maps Embed */}
               <div className="flex-1 w-full min-h-[440px] relative">
                 <iframe
-                  src="https://maps.google.com/maps?q=545C%2BV2%20Barguna&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3695.130172204339!2d90.11525137534338!3d22.159116479788366!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30aa993649c8928f%3A0xcfc35c0b4a238db2!2sDR.%20KHAIRUL%20ISLAM!5e0!3m2!1sen!2sbd!4v1790798382341!5m2!1sen!2sbd"
                   width="100%"
                   height="100%"
                   className="w-full h-full min-h-[440px] border-0"
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Chamber Location (545C+V2 Barguna)"
+                  title="Chamber Location (5459+J4 Barguna)"
                 />
               </div>
             </div>
